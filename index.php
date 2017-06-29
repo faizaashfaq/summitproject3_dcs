@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
-		<title>PTCL Data Center</title>
+		<title>PTCL Data Center Web</title>
 		<meta name="description" content="Border Animation Effect: Recreating the effect seen on carlphilippebrenner.com with SVG" />
 		<meta name="keywords" content="svg, border effect, animated border, line, grid item, hover, css" />
 		<meta name="author" content="Codrops" />
