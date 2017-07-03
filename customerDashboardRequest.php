@@ -138,6 +138,18 @@
                     <li>
                         <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Request Visit</a>
                     </li>
+						<li>
+                        <a href="#"><i class="fa fa-fw fa-history"></i> History</a>
+                    </li>
+					<li>
+                        <a href="#"><i class="fa fa-fw fa-users"></i> Registered Visitors</a>
+                    </li>
+					<li>
+                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
+                    </li>
+					<li>
+                        <a href="#"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -198,6 +210,7 @@
                             <div class="form-group">
                                 <label>Date</label>
                                 <input class="form-control" type="date" name="date">
+								
                             </div>
 
                             <div class="form-group">

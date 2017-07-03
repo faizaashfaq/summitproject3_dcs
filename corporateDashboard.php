@@ -109,7 +109,7 @@
 
                 <div class="row">
                     <div class="col-lg-12">
-                        <h2>Bordered with Striped Rows</h2>
+                        <h2>Data Center Visit Requests</h2>
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
