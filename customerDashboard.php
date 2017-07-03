@@ -6,6 +6,8 @@
     }
 ?>
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -102,7 +104,7 @@
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">
+                        <h1 id="header" class="page-header">
                             Dashboard
                         </h1>
                         <ol class="breadcrumb">
@@ -120,7 +122,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped">
+                            <table class="table table-bordered table-hover table-striped" id="requests">
                                 <thead>
                                     <tr>
                                         <th>Request ID:</th>
@@ -128,6 +130,7 @@
                                         <th>Request generated on date:</th>
                                         <th>Request generated on time:</th>
                                         <th>Status:</th>
+										<th>Edit:</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -157,11 +160,12 @@
                                                         <td><?php echo $row["requestdate"] ?></td>
                                                         <td><?php echo $row["requesttime"] ?></td>
                                                         <td><?php echo $row["status"] ?></td>
+														<td><a href="javascript:removeRow(' <?php echo $row["id"] ?> ');" class="btn btn-default btn-sm">Delete</a></td>
                                                     </tr>
                                             <?php
                                             }
                                         }
-                                    ?>
+											?>
                                 </tbody>
                             </table>
                         </div>
@@ -184,6 +188,19 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
+	<script>
+	
+	// Remove row
+			function removeRow(id) {
+				
+	
+				$.post('delete.php',{postid:id}, function(data){
+					
+					$( "#requests" ).load( "customerDashboard.php #requests" );
+				});
+			
+			}
+		</script>
 </body>
 
 </html>
