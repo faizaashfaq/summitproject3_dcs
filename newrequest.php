@@ -105,9 +105,6 @@
         $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM) VALUES ('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."')";
         if($conn->query($sql)===TRUE){
             echo "New Row added Successfully";
-			
-	    					header("Location: customerDashboard.php"); //to the customer dashboard
-	    					exit();
         }
         else {
             print_r( "Error: " . $sql . "<br>" . $conn->error); exit();
@@ -168,17 +165,22 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                  <ul class="nav navbar-nav side-nav">
                     <li >
-                        <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
+                        <a href="tables.html"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li >
                     <li class="active">
                         <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> New Request</a>
                     </li>
-					
 					<li>
-                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
+                        <a href="#"><i class="fa fa-fw fa-location-arrow"></i> History</a>
                     </li>
 					<li>
-                        <a href="#"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                        <a href="#"><i class="fa fa-fw fa-location-arrow"></i> Registered Visitors</a>
+                    </li>
+					<li>
+                        <a href="#"><i class="fa fa-fw fa-location-arrow"></i> Space Utilized</a>
+                    </li>
+					<li>
+                        <a href="#"><i class="fa fa-fw fa-location-arrow"></i> Shared Documents</a>
                     </li>
                 </ul>
             </div>
@@ -270,7 +272,7 @@
 							</div>
 						</div>
 
-						<div class='col-md-12'>
+						<div class='col-md-6'>
 	
 								<div class="form-group">
                                 <label>Name of the visitor</label>
@@ -278,16 +280,31 @@
                                
 								</div>
 							</div>
-							<div class='col-md-12'>
+							<div class='col-md-6'>
                             <div class="form-group">
                                 <label>CNIC</label>
-                                <input type="text" maxlength="13 "class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                <input class="form-control" name="nic" id='cnic'>
                                
                             </div>
 							
 							</div>	
 
-					
+							<div class='col-md-12'>
+							<div class="form-group">
+                               
+								<input type='button' value='add' id='addpeople' style="margin-top:10px"/>
+								</br>
+								
+								
+								
+								
+								<label style="margin-top:10px"> People visiting </label>
+								<ul name="list" id='listofnames' style="margin-top:5px;padding-top:35px ;     border: 1px solid #ccc;border-radius: 4px;">
+								
+								</ul>
+								
+                            </div>
+							</div>
 							
 							
 						<div class='col-md-12'>
@@ -315,7 +332,14 @@
      
 							<div class="form-group">
                                 <label>Equipment Accompanying</label>
-                                 <textarea class="form-control" rows="3" name="equipments"></textarea>
+                                <input type='text' class="form-control" id='idea' />
+								<input type='button' value='add to list' id='add' style="margin-top:10px"/>
+								</br>
+								<label style="margin-top:10px"> Equipments </label>
+								<ul id='equip' name="equipments" style="margin-top:5px;padding-top:35px ;     border: 1px solid #ccc;border-radius: 4px;">
+								
+								</ul>
+								
                             </div>
 						</div>
 						
@@ -323,8 +347,14 @@
      
 							<div class="form-group">
                                 <label>Servers/Equipments/AC Units to be worked on</label>
-                               
-								  <textarea class="form-control" rows="3" name="workedon"></textarea>
+                                <input type='text' class="form-control" id='idea1' />
+								<input type='button' value='add to list' id='add1' style="margin-top:10px"/>
+								</br>
+								
+								<ul name="workedon" id='equip1' style="margin-top:5px;padding-top:35px ;     border: 1px solid #ccc;border-radius: 4px;" >
+								
+								</ul>
+								
                             </div>
 						</div>
                            
