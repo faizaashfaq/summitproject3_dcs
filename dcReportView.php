@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if($_SESSION['user']==""){
+    if($_SESSION['user']=="" || $_SESSION['role'] != 1 && $_SESSION['role'] != 2 && $_SESSION['role'] != 3 && $_SESSION['role'] != 4){
         header("Location: index.php");
         exit();
     }
@@ -63,7 +63,20 @@
             }
             $conn->close();
         }
-//Approve button Ends        
+//Approve button Ends     
+//Reject button 
+        if(isset($_POST['reject'])){
+            $sql = "UPDATE customerrequest SET status= 'Rejected' WHERE id = '".$_GET['id']."' ";
+
+            if($conn->query($sql)===TRUE){
+                echo "Record Updated Successfully";
+            }
+            else{
+                echo "Record update failure";
+            }
+            $conn->close();
+        }
+//Reject button Ends        
     }
     ?>
 
@@ -105,8 +118,11 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="dcDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
+                    </li>
                     <li class="active">
-                        <a href="corporateDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
+                        <a href="dcReportView.php?id=<?php echo $_GET['id'];?>"><i class="fa fa-fw fa-table"></i> Report View</a>
                     </li>
                 </ul>
             </div>
@@ -125,7 +141,7 @@
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="corporateDashboard.php">Dashboard</a>
+                                <i class="fa fa-dashboard"></i>  <a href="dcDashboard.php">Dashboard</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-table"></i> Report View
@@ -162,6 +178,7 @@
                                         <th>Servers/Equipments Maintanence activity:</th>
                                         <th>Status:</th>
                                         <th>Approve:</th>
+                                        <th>Reject:</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -210,6 +227,14 @@
                                                         }
                                                         else
                                                             echo "<button type='submit' class='btn btn-default btn-sm' disabled>Approve</button>";
+                                                        ?>
+                                                        </td>
+                                                        <td><?php
+                                                        if ($row["status"] == "Awaiting approval from DC") {
+                                                            echo "<button type='submit' name='reject' class='btn btn-default btn-sm' >Reject</button>";
+                                                        }
+                                                        else
+                                                            echo "<button type='submit' class='btn btn-default btn-sm' disabled>Reject</button>";
                                                         ?>
                                                         </td>
                                                     </tr>

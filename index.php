@@ -146,6 +146,7 @@
 							if($row["role"]==0){
 	    					$_SESSION['user'] = $row["Name"];
 							$_SESSION['id'] = $row["ID"];
+							$_SESSION['role'] = $row['role'];
 	    					header("Location: customerDashboard.php"); //to the customer dashboard
 	    					exit();
 							}
@@ -153,12 +154,14 @@
 							else if ($row["role"]==1 || $row["role"]==2 || $row["role"]==3  ||$row["role"]==4 ){
 	    					$_SESSION['user'] = $row["Name"];
 							$_SESSION['id'] = $row["ID"];
+							$_SESSION['role'] = $row['role'];
 	    					header("Location: dcDashboard.php"); //to the datacenter dashboard
 	    					exit();
 							}
 							else if($row["role"]==5){
 	    					$_SESSION['user'] = $row["Name"];
 							$_SESSION['id'] = $row["ID"];
+							$_SESSION['role'] = $row['role'];
 	    					header("Location: corporateDashboard.php"); //to the KAM dashboard
 	    					exit();
 							}

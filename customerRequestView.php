@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if($_SESSION['user']==""){
+    if($_SESSION['user']=="" || $_SESSION['role'] != 0){
         header("Location: index.php");
         exit();
     }
@@ -103,7 +103,17 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
-                        <a href="corporateDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
+                        <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Request Visit</a>
+                    </li>
+                
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
                     </li>
                 </ul>
             </div>
@@ -122,7 +132,7 @@
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="corporateDashboard.php">Dashboard</a>
+                                <i class="fa fa-dashboard"></i>  <a href="customerDashboard.php">Dashboard</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-table"></i> Report View
