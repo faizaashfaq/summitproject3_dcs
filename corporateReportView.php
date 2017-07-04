@@ -76,7 +76,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">PTCL Data Center</a>
+                <a class="navbar-brand" href="index.php">PTCL Data Center</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -137,7 +137,7 @@
                         <h2>Report View</h2>
                         <div class="table-responsive">
                         <form method="post" role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-                            <table class="table table-bordered table-hover table-striped">
+                            <table class="table table-bordered table-hover table-striped" id="requests">
                                 <thead>
                                     <tr>
                                         <th>Request ID:</th>
@@ -147,9 +147,8 @@
                                         <th>Name:</th>
                                         <th>NIC:</th>
                                         <th>Company:</th>
-                                        <th>Requested Date:</th>
-                                        <th>Time in:</th>
-                                        <th>Time out:</th>
+                                        <th>Requested Date& Time in:</th>
+                                        <th>Requested Date& Time out:</th>
                                         <th>Work Details:</th>
                                         <th>Equipments Accompanied:</th>
                                         <th>Servers/Equipments/ACs unit to be worked upon:</th>
@@ -157,7 +156,11 @@
                                         <th>Software Installation:</th>
                                         <th>Hardware Installation:</th>
                                         <th>Servers/Equipments Maintanence activity:</th>
+										<th>Permission from DC personnel required:</th>
+										<th>Satisfied from the enviornment:</th>
+										<th>Remarks:</th>
                                         <th>Status:</th>
+										<th>Accept/Reject</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -175,7 +178,7 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                         echo("Connection Successful");
-                                        $sql = "SELECT id, requestfor, requestdate, requesttime, name, nic, company, requesteddate, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status FROM customerrequest LIMIT 10";
+                                        $sql = "SELECT id, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence,remarks, permission, enviornment, status FROM customerrequest WHERE KAM='".$_SESSION['user']."' LIMIT 10";
                                         $result = $conn->query($sql);
 
                                         if($result->num_rows > 0){
@@ -190,7 +193,6 @@
                                                         <td><?php echo $row["name"] ?></td>
                                                         <td><?php echo $row["nic"] ?></td>
                                                         <td><?php echo $row["company"] ?></td>
-                                                        <td><?php echo $row["requesteddate"] ?></td>
                                                         <td><?php echo $row["timein"] ?></td>
                                                         <td><?php echo $row["timeout"] ?></td>
                                                         <td><?php echo $row["workdetails"] ?></td>
@@ -199,8 +201,12 @@
                                                         <td><?php echo $row["shutdown"] ?></td>
                                                         <td><?php echo $row["software"] ?></td>
                                                         <td><?php echo $row["hardware"] ?></td>
-                                                        <td><?php echo $row["maintanence"] ?></td>
+														<td><?php echo $row["maintanence"] ?></td>
+														<td><?php echo $row["permission"] ?></td>
+                                                        <td><?php echo $row["enviornment"] ?></td>
+														<td><?php echo $row["remarks"] ?></td>
                                                         <td><?php echo $row["status"] ?></td>
+														<td><a href="javascript:accept(' <?php echo $row["id"] ?>' , '<?php echo $row["status"] ?>' );" class="btn btn-success btn-sm" id=<?php echo "accept".$row["id"] ?>><span class="glyphicon glyphicon-ok"></span></a> <a href="javascript:reject(' <?php echo $row["id"] ?> ', '<?php echo $row["status"] ?>');" class="btn btn-danger btn-sm" id=<?php echo "reject".$row["id"] ?>><span class="glyphicon glyphicon-remove"></span></a></td>
                                                     </tr>
                                             <?php
                                             }
@@ -236,6 +242,46 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+	
+	<script>
+	
+	// Remove row
+			function accept(id , status) {
+				if(confirm("Are you sure?")==true){
+					if(status!="Awaiting approval from KAM"){
+					document.getElementById("accept".id).disabled = true;
+					document.getElementById("reject".id).disabled = true;
+					}
+					
+					
+					$.post('acceptbykam.php',{postid:id}, function(data){
+						alert("Request Accepted");
+						$( "#requests" ).load( "corporateReportView.php #requests" );
+					});
+				}
+			}
+		</script>
+		
+		<script>
+	
+	// Remove row
+			function reject(id , status) {
+				if(confirm("Are you sure?")==true){
+					
+					if(status!="Awaiting approval from KAM"){
+					document.getElementById("accept".id).disabled = true;
+					document.getElementById("reject".id).disabled = true;
+					}
+					
+					$.post('rejectbykam.php',{postid:id}, function(data){
+						
+						
+						$( "#requests" ).load( "corporateReportView.php #requests" );
+					});
+				}
+			
+			}
+		</script>
 
 </body>
 

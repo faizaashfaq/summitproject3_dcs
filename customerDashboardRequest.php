@@ -141,7 +141,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">PTCL Data Center</a>
+                <a class="navbar-brand" href="index.php">PTCL Data Center</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -279,7 +279,7 @@
 							<label> Start date & time of Visit </label>
 								<div class='input-group date' id='datetimepicker6' >
 								
-									<input type='text' class="form-control" name="timein"/>
+									<input type='text' class="form-control" name="timein" />
 									<span class="input-group-addon">
 										<span class="glyphicon glyphicon-calendar"></span>
 									</span>
