@@ -38,47 +38,7 @@
 </head>
 
 <body>
-    <?php
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $servername = "localhost";
-        $user = "root";
-        $pass = "";
-        $dbname = "datacenter";
-
-        $conn = new mysqli($servername, $user, $pass, $dbname);
-
-        if($conn -> connect_error){
-            die("Connection Failed: " . $conn->connect_error);
-        }
-        echo "Connection Successful";
-        //Approve button 
-        if(isset($_POST['approve'])){
-            $sql = "UPDATE customerrequest SET status= 'Awaiting approval from DC' WHERE id = '".$_GET['id']."' ";
-
-            if($conn->query($sql)===TRUE){
-                echo "Record Updated Successfully";
-            }
-            else{
-                echo "Record update failure";
-            }
-            $conn->close();
-        }
-//Approve button Ends     
-//Reject button 
-        if(isset($_POST['reject'])){
-            $sql = "UPDATE customerrequest SET status= 'Rejected' WHERE id = '".$_GET['id']."' ";
-
-            if($conn->query($sql)===TRUE){
-                echo "Record Updated Successfully";
-            }
-            else{
-                echo "Record update failure";
-            }
-            $conn->close();
-        }
-//Reject button Ends        
-    }
-    ?>
+  
 
     <div id="wrapper">
 
@@ -188,17 +148,14 @@
                                         $user = "root";
                                         $pass = "";
                                         $dbname = "datacenter";
-
                                         //establishing connection
                                         $conn = new mysqli($servername, $user, $pass, $dbname);
-
                                         if($conn -> connect_error){
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                         echo("Connection Successful");
                                         $sql = "SELECT id, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status FROM customerrequest WHERE id = ".$ID." LIMIT 10";
                                         $result = $conn->query($sql);
-
                                         if($result->num_rows > 0){
                                             while($row = $result->fetch_assoc()){
                                                 $id = $row["id"];
@@ -223,7 +180,7 @@
                                                         <td><?php echo $row["status"] ?></td>
 														<td><?php
                                                         if ($row["status"] == "Awaiting approval from KAM") {
-                                                            echo "<button type='submit' name='approve' class='btn btn-default btn-sm' >Approve</button>";
+                                                            echo "<button type='submit' name='approve' class='btn btn-default btn-sm' onclick=\"accept($ID)\" >Approve</button>";
                                                         }
                                                         else
                                                             echo "<button type='submit' class='btn btn-default btn-sm' disabled>Approve</button>";
@@ -231,7 +188,7 @@
                                                         </td>
                                                         <td><?php
                                                         if ($row["status"] == "Awaiting approval from KAM") {
-                                                            echo "<button type='submit' name='reject' class='btn btn-default btn-sm' >Reject</button>";
+                                                            echo "<button type='submit' name='reject' class='btn btn-default btn-sm' onclick=\"rejecta($ID)\" >Reject</button>";
                                                         }
                                                         else
                                                             echo "<button type='submit' class='btn btn-default btn-sm' disabled>Reject</button>";
@@ -269,39 +226,31 @@
 	<script>
 	
 	// Remove row
-			function accept(id , status) {
-				if(confirm("Are you sure?")==true){
-					if(status!="Awaiting approval from KAM"){
-					document.getElementById("accept".id).disabled = true;
-					document.getElementById("reject".id).disabled = true;
-					}
-					
+			function accept(id) {
+				if(confirm("Are you sure?hhh")==true){
 					
 					$.post('acceptbykam.php',{postid:id}, function(data){
 						alert("Request Accepted");
-						$( "#requests" ).load( "corporateReportView.php #requests" );
+						
 					});
 				}
+				$( "#requests" ).load( "corporateReportView.php #requests" );
 			}
 		</script>
 		
 		<script>
 	
 	// Remove row
-			function reject(id , status) {
+			function rejecta(id) {
+				
 				if(confirm("Are you sure?")==true){
 					
-					if(status!="Awaiting approval from KAM"){
-					document.getElementById("accept".id).disabled = true;
-					document.getElementById("reject".id).disabled = true;
-					}
-					
 					$.post('rejectbykam.php',{postid:id}, function(data){
+							alert("Request rejected");
 						
-						
-						$( "#requests" ).load( "corporateReportView.php #requests" );
 					});
 				}
+				$( "#requests" ).load( "corporateReportView.php #requests" );
 			
 			}
 		</script>

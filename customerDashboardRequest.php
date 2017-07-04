@@ -81,7 +81,8 @@
         $requestfor = $_POST["requestfor"];
 		$permission = $_POST["permission"];
 		$enviornment = $_POST["enviornment"];
-		
+		$remarks = $_POST["remarks"];
+		$clientid=$_SESSION['id'];
         $status = "Awaiting approval from KAM";
 
         date_default_timezone_set("Asia/Karachi");
@@ -102,7 +103,7 @@
         }
         echo "Connection Successful";
 
-        $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM, clientid) VALUES ('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."', '".$_SESSION['id']."')";
+        $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM, clientid , permission , enviornment , remarks) VALUES('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."',  '".$clientid."', '".$permission."', '".$enviornment."', '".$remarks."')";
         if($conn->query($sql)===TRUE){
             echo "New Row added Successfully";
 			
@@ -279,7 +280,7 @@
 							<label> Start date & time of Visit </label>
 								<div class='input-group date' id='datetimepicker6' >
 								
-									<input type='text' class="form-control" name="timein" />
+									<input type='text' class="form-control" name="timein" required />
 									<span class="input-group-addon">
 										<span class="glyphicon glyphicon-calendar"></span>
 									</span>
@@ -291,7 +292,7 @@
 							<label> End date & time of Visit </label>
 								<div class='input-group date' id='datetimepicker7' >
 								
-									<input type='text' class="form-control" name="timeout" />
+									<input type='text' class="form-control" name="timeout" required />
 									<span class="input-group-addon">
 										<span class="glyphicon glyphicon-calendar"></span>
 									</span>
@@ -303,14 +304,14 @@
 	
 								<div class="form-group">
                                 <label>Name of the visitor</label>
-                                <input class="form-control" name="name" id='name'>
+                                <input class="form-control" name="name" id='name' required>
                                
 								</div>
 							</div>
 							<div class='col-md-12'>
                             <div class="form-group">
                                 <label>CNIC</label>
-                                <input type="text" maxlength="13 "class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                <input type="text" maxlength="13 "class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                                
                             </div>
 							
@@ -323,7 +324,7 @@
      
 							   <div class="form-group">
                                 <label>Company</label>
-                                <input class="form-control" name="company">
+                                <input class="form-control" name="company" required>
                             </div>
 						</div>
 
@@ -424,10 +425,10 @@
 						 <div class="form-group">
                                 <label>Permission from DC Shift Personnel </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="permission" id="permissiony" value="option1" checked>Yes
+                                    <input type="radio" name="permission" id="permissiony" value="Yes" checked>Yes
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="permission" id="permissionn" value="option2">No
+                                    <input type="radio" name="permission" id="permissionn" value="No">No
                                 </label>
                                
                             </div>
@@ -438,10 +439,10 @@
 						 <div class="form-group">
                                 <label>Satisfied from DC enviornment</label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="enviornment" id="satisfies" value="option1" checked>Yes
+                                    <input type="radio" name="enviornment" id="satisfies" value="Yes" checked>Yes
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="enviornment" id="not-satisfied" value="option2">No
+                                    <input type="radio" name="enviornment" id="not-satisfied" value="No">No
                                 </label>
                                
                             </div>
@@ -451,7 +452,7 @@
      
 							<div class="form-group">
                                 <label>Remarks (if any)</label>
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea class="form-control" rows="3" name="remarks"></textarea>
                             </div>
 						</div>
                           
