@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if($_SESSION['user']==""){
+    if($_SESSION['user']=="" || $_SESSION['role'] != 5){
         header("Location: index.php");
         exit();
     }
@@ -39,7 +39,6 @@
 
 <body>
     <?php
-    $id = "";
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $servername = "localhost";
         $user = "root";
@@ -52,15 +51,32 @@
             die("Connection Failed: " . $conn->connect_error);
         }
         echo "Connection Successful";
-        $sql = "UPDATE customerrequest SET status= 'Awaiting approval from DC' WHERE id = '".$_POST["id"]."' ";
+        //Approve button 
+        if(isset($_POST['approve'])){
+            $sql = "UPDATE customerrequest SET status= 'Awaiting approval from DC' WHERE id = '".$_GET['id']."' ";
 
-        if($conn->query($sql)===TRUE){
-            echo "Record Updated Successfully";
+            if($conn->query($sql)===TRUE){
+                echo "Record Updated Successfully";
+            }
+            else{
+                echo "Record update failure";
+            }
+            $conn->close();
         }
-        else{
-            echo "Record update failure";
+//Approve button Ends     
+//Reject button 
+        if(isset($_POST['reject'])){
+            $sql = "UPDATE customerrequest SET status= 'Rejected' WHERE id = '".$_GET['id']."' ";
+
+            if($conn->query($sql)===TRUE){
+                echo "Record Updated Successfully";
+            }
+            else{
+                echo "Record update failure";
+            }
+            $conn->close();
         }
-        $conn->close();
+//Reject button Ends        
     }
     ?>
 
@@ -102,8 +118,11 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li class="active">
+                    <li>
                         <a href="corporateDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <a href="corporateReportView.php?id=<?php echo $_GET['id'];?>"><i class="fa fa-fw fa-table"></i> Report View</a>
                     </li>
                 </ul>
             </div>
@@ -136,7 +155,7 @@
                     <div class="col-lg-12">
                         <h2>Report View</h2>
                         <div class="table-responsive">
-                        <form method="post" role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                        <form method="post" role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]."?id=".urlencode($_GET['id']));?>">
                             <table class="table table-bordered table-hover table-striped" id="requests">
                                 <thead>
                                     <tr>
@@ -156,15 +175,14 @@
                                         <th>Software Installation:</th>
                                         <th>Hardware Installation:</th>
                                         <th>Servers/Equipments Maintanence activity:</th>
-										<th>Permission from DC personnel required:</th>
-										<th>Satisfied from the enviornment:</th>
-										<th>Remarks:</th>
                                         <th>Status:</th>
-										<th>Accept/Reject</th>
+										<th>Accept:</th>
+                                        <th>Reject:</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
+                                        $ID = $_GET['id'];
                                         //database access
                                         $servername = "localhost";
                                         $user = "root";
@@ -178,7 +196,7 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                         echo("Connection Successful");
-                                        $sql = "SELECT id, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence,remarks, permission, enviornment, status FROM customerrequest WHERE KAM='".$_SESSION['user']."' LIMIT 10";
+                                        $sql = "SELECT id, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status FROM customerrequest WHERE id = ".$ID." LIMIT 10";
                                         $result = $conn->query($sql);
 
                                         if($result->num_rows > 0){
@@ -202,11 +220,23 @@
                                                         <td><?php echo $row["software"] ?></td>
                                                         <td><?php echo $row["hardware"] ?></td>
 														<td><?php echo $row["maintanence"] ?></td>
-														<td><?php echo $row["permission"] ?></td>
-                                                        <td><?php echo $row["enviornment"] ?></td>
-														<td><?php echo $row["remarks"] ?></td>
                                                         <td><?php echo $row["status"] ?></td>
-														<td><a href="javascript:accept(' <?php echo $row["id"] ?>' , '<?php echo $row["status"] ?>' );" class="btn btn-success btn-sm" id=<?php echo "accept".$row["id"] ?>><span class="glyphicon glyphicon-ok"></span></a> <a href="javascript:reject(' <?php echo $row["id"] ?> ', '<?php echo $row["status"] ?>');" class="btn btn-danger btn-sm" id=<?php echo "reject".$row["id"] ?>><span class="glyphicon glyphicon-remove"></span></a></td>
+														<td><?php
+                                                        if ($row["status"] == "Awaiting approval from KAM") {
+                                                            echo "<button type='submit' name='approve' class='btn btn-default btn-sm' >Approve</button>";
+                                                        }
+                                                        else
+                                                            echo "<button type='submit' class='btn btn-default btn-sm' disabled>Approve</button>";
+                                                        ?>
+                                                        </td>
+                                                        <td><?php
+                                                        if ($row["status"] == "Awaiting approval from KAM") {
+                                                            echo "<button type='submit' name='reject' class='btn btn-default btn-sm' >Reject</button>";
+                                                        }
+                                                        else
+                                                            echo "<button type='submit' class='btn btn-default btn-sm' disabled>Reject</button>";
+                                                        ?>
+                                                        </td>
                                                     </tr>
                                             <?php
                                             }
@@ -214,13 +244,6 @@
                                     ?>
                                 </tbody>
                             </table>
-                            <div class="col-lg-2">
-                            <div class="form-group">
-                                <label>Enter ID to approve</label>
-                                <input class="form-control" name="id">
-                            </div>
-                            <button type="submit" class="btn btn-default">Approve</button>
-                            </div>
                             
                             </form>
                         </div>

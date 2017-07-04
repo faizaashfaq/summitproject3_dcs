@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if($_SESSION['user']==""){
+    if($_SESSION['user']=="" || $_SESSION['role'] != 5){
         header("Location: index.php");
         exit();
     }
@@ -119,6 +119,7 @@
                                         <th>Request generated on date:</th>
                                         <th>Request generated on time:</th>
                                         <th>Status:</th>
+                                        <th>View Report:</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -145,10 +146,11 @@
 												while($row = $result->fetch_assoc()){ ?>
 														<tr>
 															<td><?php echo $row["id"] ?></td>
-															<td><a href="corporateReportView.php"><?php echo $row["requestfor"] ?></a></td>
-															<td><?php echo $row["requestdate"] ?></td>
-															<td><?php echo $row["requesttime"] ?></td>
-															<td><?php echo $row["status"] ?></td>
+                                                            <td><?php echo $row["requestfor"] ?></td>
+                                                            <td><?php echo $row["requestdate"] ?></td>
+                                                            <td><?php echo $row["requesttime"] ?></td>
+                                                            <td><?php echo $row["status"] ?></td>
+                                                            <td><a class="btn btn-default btn-sm" href="corporateReportView.php?id=<?php echo $row['id'];?>">View</a></td>
 														</tr>
 												<?php
 												}
