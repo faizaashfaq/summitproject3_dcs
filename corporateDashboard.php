@@ -51,7 +51,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">PTCL Data Center</a>
+                <a class="navbar-brand" href="index.php">PTCL Data Center</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -137,21 +137,23 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                         echo("Connection Successful");
-                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM customerrequest LIMIT 10";
+                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM customerrequest WHERE KAM='".$_SESSION['user']."'LIMIT 10";
                                         $result = $conn->query($sql);
-
-                                        if($result->num_rows > 0){
-                                            while($row = $result->fetch_assoc()){ ?>
-                                                    <tr>
-                                                        <td><?php echo $row["id"] ?></td>
-                                                        <td><a href="corporateReportView.php"><?php echo $row["requestfor"] ?></a></td>
-                                                        <td><?php echo $row["requestdate"] ?></td>
-                                                        <td><?php echo $row["requesttime"] ?></td>
-                                                        <td><?php echo $row["status"] ?></td>
-                                                    </tr>
-                                            <?php
-                                            }
-                                        }
+										
+										if(!empty($result)){
+											if($result->num_rows > 0 ){
+												while($row = $result->fetch_assoc()){ ?>
+														<tr>
+															<td><?php echo $row["id"] ?></td>
+															<td><a href="corporateReportView.php"><?php echo $row["requestfor"] ?></a></td>
+															<td><?php echo $row["requestdate"] ?></td>
+															<td><?php echo $row["requesttime"] ?></td>
+															<td><?php echo $row["status"] ?></td>
+														</tr>
+												<?php
+												}
+											}
+										}
                                     ?>
                                 </tbody>
                             </table>
