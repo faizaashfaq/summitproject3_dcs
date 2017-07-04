@@ -102,7 +102,7 @@
         }
         echo "Connection Successful";
 
-        $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM) VALUES ('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."')";
+        $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM, clientid) VALUES ('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."', '".$_SESSION['id']."')";
         if($conn->query($sql)===TRUE){
             echo "New Row added Successfully";
 			
@@ -241,7 +241,36 @@
      
 							   <div class="form-group">
                                 <label>Name of the KAM</label>
-                                <input class="form-control" name="KAM">
+                                 <select class="form-control" name="KAM">
+								   <?php
+                                        //database access
+                                        $servername = "localhost";
+                                        $user = "root";
+                                        $pass = "";
+                                        $dbname = "datacenter";
+
+                                        //establishing connection
+                                        $conn = new mysqli($servername, $user, $pass, $dbname);
+
+                                        if($conn -> connect_error){
+                                            die("Connection Failed: ". $conn->connect_error);
+                                        }
+                                        echo("Connection Successful");
+                                        echo($_SESSION['user']);
+                                        $sql = "SELECT id, Name, role FROM users WHERE role=5";
+                                        $result = $conn->query($sql);
+
+                                        if($result->num_rows > 0){
+                                            while($row = $result->fetch_assoc()){ ?>
+											<option value=<?php echo $row["Name"] ?>><?php echo $row["Name"] ?></option>
+
+                                            <?php
+                                            }
+                                        }
+											?>
+								 
+                                    
+                                </select>
                             </div>
 						</div>
 

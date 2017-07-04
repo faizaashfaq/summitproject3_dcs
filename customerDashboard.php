@@ -149,7 +149,7 @@
                                         }
                                         echo("Connection Successful");
                                         echo($_SESSION['user']);
-                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM customerrequest LIMIT 10";
+                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM customerrequest WHERE clientid=".$_SESSION['id']." LIMIT 10";
                                         $result = $conn->query($sql);
 
                                         if($result->num_rows > 0){
