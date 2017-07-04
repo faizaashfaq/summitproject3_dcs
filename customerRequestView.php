@@ -6,8 +6,6 @@
     }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,6 +38,31 @@
 </head>
 
 <body>
+    <?php
+    $id = "";
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $servername = "localhost";
+        $user = "root";
+        $pass = "";
+        $dbname = "datacenter";
+
+        $conn = new mysqli($servername, $user, $pass, $dbname);
+
+        if($conn -> connect_error){
+            die("Connection Failed: " . $conn->connect_error);
+        }
+        echo "Connection Successful";
+        $sql = "UPDATE customerrequest SET status= 'Awaiting approval from DC' WHERE id = '".$_POST["id"]."' ";
+
+        if($conn->query($sql)===TRUE){
+            echo "Record Updated Successfully";
+        }
+        else{
+            echo "Record update failure";
+        }
+        $conn->close();
+    }
+    ?>
 
     <div id="wrapper">
 
@@ -53,7 +76,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">PTCL Data Center</a>
+                <a class="navbar-brand" href="index.html">PTCL Data Center</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -80,17 +103,7 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
-                        <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Request Visit</a>
-                    </li>
-				
-					<li>
-                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
-                    </li>
-					<li>
-                        <a href="#"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                        <a href="corporateDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li>
                 </ul>
             </div>
@@ -104,15 +117,15 @@
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 id="header" class="page-header">
+                        <h1 class="page-header">
                             Dashboard
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                                <i class="fa fa-dashboard"></i>  <a href="corporateDashboard.php">Dashboard</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-table"></i> Status Report
+                                <i class="fa fa-table"></i> Report View
                             </li>
                         </ol>
                     </div>
@@ -121,21 +134,34 @@
 
                 <div class="row">
                     <div class="col-lg-12">
+                        <h2>Report View</h2>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped" id="requests">
+                            <table class="table table-bordered table-hover table-striped">
                                 <thead>
                                     <tr>
                                         <th>Request ID:</th>
+                                        <th>Client ID:</th>
                                         <th>Request generated for:</th>
                                         <th>Request generated on date:</th>
                                         <th>Request generated on time:</th>
+                                        <th>Name:</th>
+                                        <th>NIC:</th>
+                                        <th>Company:</th>
+                                        <th>Time in:</th>
+                                        <th>Time out:</th>
+                                        <th>Work Details:</th>
+                                        <th>Equipments Accompanied:</th>
+                                        <th>Servers/Equipments/ACs unit to be worked upon:</th>
+                                        <th>Server shutdown required:</th>
+                                        <th>Software Installation:</th>
+                                        <th>Hardware Installation:</th>
+                                        <th>Servers/Equipments Maintanence activity:</th>
                                         <th>Status:</th>
-                                        <th>Report:</th>
-										<th>Edit:</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
+                                        $ID = $_GET['id'];
                                         //database access
                                         $servername = "localhost";
                                         $user = "root";
@@ -149,27 +175,42 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                         echo("Connection Successful");
-                                        echo($_SESSION['user']);
-                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM customerrequest WHERE clientid=".$_SESSION['id']." LIMIT 10";
+                                        $sql = "SELECT id, clientid, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status FROM customerrequest WHERE id = ".$ID."";
                                         $result = $conn->query($sql);
-
                                         if($result->num_rows > 0){
-                                            while($row = $result->fetch_assoc()){ ?>
+                                            while($row = $result->fetch_assoc()){
+                                             ?>
                                                     <tr>
                                                         <td><?php echo $row["id"] ?></td>
+                                                        <td><?php echo $row["clientid"] ?></td>
                                                         <td><?php echo $row["requestfor"] ?></td>
                                                         <td><?php echo $row["requestdate"] ?></td>
                                                         <td><?php echo $row["requesttime"] ?></td>
+                                                        <td><?php echo $row["name"] ?></td>
+                                                        <td><?php echo $row["nic"] ?></td>
+                                                        <td><?php echo $row["company"] ?></td>
+                                                        <td><?php echo $row["timein"] ?></td>
+                                                        <td><?php echo $row["timeout"] ?></td>
+                                                        <td><?php echo $row["workdetails"] ?></td>
+                                                        <td><?php echo $row["equipments"] ?></td>
+                                                        <td><?php echo $row["workedon"] ?></td>
+                                                        <td><?php echo $row["shutdown"] ?></td>
+                                                        <td><?php echo $row["software"] ?></td>
+                                                        <td><?php echo $row["hardware"] ?></td>
+                                                        <td><?php echo $row["maintanence"] ?></td>
                                                         <td><?php echo $row["status"] ?></td>
-                                                        <td><a class="btn btn-default btn-sm" href="customerRequestView.php?id=<?php echo $row['id'];?>">View</a></td>
-														<td><a href="javascript:removeRow(' <?php echo $row["id"] ?> ');" class="btn btn-default btn-sm">Delete</a></td>
                                                     </tr>
-                                            <?php
+                                            <?php 
                                             }
                                         }
-											?>
+
+                                            else echo("No result");
+                                    ?>
                                 </tbody>
                             </table>
+                            
+                            
+                            
                         </div>
                     </div>
                 </div>
@@ -190,19 +231,6 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-	<script>
-	
-	// Remove row
-			function removeRow(id) {
-				
-	
-				$.post('delete.php',{postid:id}, function(data){
-					
-					$( "#requests" ).load( "customerDashboard.php #requests" );
-				});
-			
-			}
-		</script>
 </body>
 
 </html>

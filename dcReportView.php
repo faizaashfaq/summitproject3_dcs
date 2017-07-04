@@ -39,7 +39,6 @@
 
 <body>
     <?php
-    $id = "";
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $servername = "localhost";
         $user = "root";
@@ -51,15 +50,20 @@
         if($conn -> connect_error){
             die("Connection Failed: " . $conn->connect_error);
         }
-        $sql = "UPDATE customerrequest SET status= 'Approved' WHERE id = '".$_POST["id"]."' ";
+        echo "Connection Successful";
+ //Approve button 
+        if(isset($_POST['approve'])){
+            $sql = "UPDATE customerrequest SET status= 'Approved' WHERE id = '".$_GET['id']."' ";
 
-        if($conn->query($sql)===TRUE){
-            echo "Record Updated Successfully";
+            if($conn->query($sql)===TRUE){
+                echo "Record Updated Successfully";
+            }
+            else{
+                echo "Record update failure";
+            }
+            $conn->close();
         }
-        else{
-            echo "Record update failure";
-        }
-        $conn->close();
+//Approve button Ends        
     }
     ?>
 
@@ -135,18 +139,18 @@
                     <div class="col-lg-12">
                         <h2>Report View</h2>
                         <div class="table-responsive">
-                        <form method="post" role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                        <form method="post" role="form" style="display: block;" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]."?id=".urlencode($_GET['id']));?>";">
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
                                     <tr>
                                         <th>Request ID:</th>
+                                        <th>Client ID:</th>
                                         <th>Request generated for:</th>
                                         <th>Request generated on date:</th>
                                         <th>Request generated on time:</th>
                                         <th>Name:</th>
                                         <th>NIC:</th>
                                         <th>Company:</th>
-                                        <th>Requested Date:</th>
                                         <th>Time in:</th>
                                         <th>Time out:</th>
                                         <th>Work Details:</th>
@@ -157,10 +161,12 @@
                                         <th>Hardware Installation:</th>
                                         <th>Servers/Equipments Maintanence activity:</th>
                                         <th>Status:</th>
+                                        <th>Approve:</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
+                                        $ID = $_GET['id'];
                                         //database access
                                         $servername = "localhost";
                                         $user = "root";
@@ -174,22 +180,20 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                         echo("Connection Successful");
-                                        $sql = "SELECT id, requestfor, requestdate, requesttime, name, nic, company, requesteddate, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status FROM customerrequest LIMIT 10";
+                                        $sql = "SELECT id, clientid, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status FROM customerrequest WHERE id = ".$ID."";
                                         $result = $conn->query($sql);
-
                                         if($result->num_rows > 0){
                                             while($row = $result->fetch_assoc()){
-                                                $id = $row["id"];
                                              ?>
                                                     <tr>
                                                         <td><?php echo $row["id"] ?></td>
+                                                        <td><?php echo $row["clientid"] ?></td>
                                                         <td><?php echo $row["requestfor"] ?></td>
                                                         <td><?php echo $row["requestdate"] ?></td>
                                                         <td><?php echo $row["requesttime"] ?></td>
                                                         <td><?php echo $row["name"] ?></td>
                                                         <td><?php echo $row["nic"] ?></td>
                                                         <td><?php echo $row["company"] ?></td>
-                                                        <td><?php echo $row["requesteddate"] ?></td>
                                                         <td><?php echo $row["timein"] ?></td>
                                                         <td><?php echo $row["timeout"] ?></td>
                                                         <td><?php echo $row["workdetails"] ?></td>
@@ -200,22 +204,26 @@
                                                         <td><?php echo $row["hardware"] ?></td>
                                                         <td><?php echo $row["maintanence"] ?></td>
                                                         <td><?php echo $row["status"] ?></td>
+                                                        <td><?php
+                                                        if ($row["status"] == "Awaiting approval from DC") {
+                                                            echo "<button type='submit' name='approve' class='btn btn-default btn-sm' >Approve</button>";
+                                                        }
+                                                        else
+                                                            echo "<button type='submit' class='btn btn-default btn-sm' disabled>Approve</button>";
+                                                        ?>
+                                                        </td>
                                                     </tr>
-                                            <?php
+                                            <?php 
                                             }
                                         }
+
+                                            
                                     ?>
                                 </tbody>
                             </table>
-                            <div class="col-lg-2">
-                            <div class="form-group">
-                                <label>Enter ID to approve</label>
-                                <input class="form-control" name="id">
-                            </div>
-                            <button type="submit" class="btn btn-default">Approve</button>
-                            </div>
-                            
                             </form>
+                            
+                            
                         </div>
                     </div>
                 </div>
