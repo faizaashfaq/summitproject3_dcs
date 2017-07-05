@@ -105,9 +105,12 @@
         $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM, clientid) VALUES ('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."', '".$_SESSION['id']."')";
         if($conn->query($sql)===TRUE){
             echo "New Row added Successfully";
-			
-	    					header("Location: customerDashboard.php"); //to the customer dashboard
-	    					exit();
+			                 
+            //Mail function
+            
+            //End Mail
+            header("Location: customerDashboard.php"); //to the customer dashboard
+	    	exit();
         }
         else {
             print_r( "Error: " . $sql . "<br>" . $conn->error); exit();
