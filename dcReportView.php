@@ -38,47 +38,7 @@
 </head>
 
 <body>
-    <?php
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $servername = "localhost";
-        $user = "root";
-        $pass = "";
-        $dbname = "datacenter";
-
-        $conn = new mysqli($servername, $user, $pass, $dbname);
-
-        if($conn -> connect_error){
-            die("Connection Failed: " . $conn->connect_error);
-        }
-        echo "Connection Successful";
- //Approve button 
-        if(isset($_POST['approve'])){
-            $sql = "UPDATE customerrequest SET status= 'Approved' WHERE id = '".$_GET['id']."' ";
-
-            if($conn->query($sql)===TRUE){
-                echo "Record Updated Successfully";
-            }
-            else{
-                echo "Record update failure";
-            }
-            $conn->close();
-        }
-//Approve button Ends     
-//Reject button 
-        if(isset($_POST['reject'])){
-            $sql = "UPDATE customerrequest SET status= 'Rejected' WHERE id = '".$_GET['id']."' ";
-
-            if($conn->query($sql)===TRUE){
-                echo "Record Updated Successfully";
-            }
-            else{
-                echo "Record update failure";
-            }
-            $conn->close();
-        }
-//Reject button Ends        
-    }
-    ?>
+   
 
     <div id="wrapper">
 
@@ -92,7 +52,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">PTCL Data Center</a>
+                <a class="navbar-brand" href="index.php">PTCL Data Center</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -156,7 +116,7 @@
                         <h2>Report View</h2>
                         <div class="table-responsive">
                         <form method="post" role="form" style="display: block;" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]."?id=".urlencode($_GET['id']));?>";">
-                            <table class="table table-bordered table-hover table-striped">
+                            <table class="table table-bordered table-hover table-striped" id="requests">
                                 <thead>
                                     <tr>
                                         <th>Request ID:</th>
@@ -221,9 +181,11 @@
                                                         <td><?php echo $row["hardware"] ?></td>
                                                         <td><?php echo $row["maintanence"] ?></td>
                                                         <td><?php echo $row["status"] ?></td>
-                                                        <td><?php
+														
+														
+														<td><?php
                                                         if ($row["status"] == "Awaiting approval from DC") {
-                                                            echo "<button type='submit' name='approve' class='btn btn-default btn-sm' >Approve</button>";
+                                                            echo "<button type='submit' name='approve' class='btn btn-default btn-sm' onclick=\"acceptd($ID)\" >Approve</button>";
                                                         }
                                                         else
                                                             echo "<button type='submit' class='btn btn-default btn-sm' disabled>Approve</button>";
@@ -231,12 +193,14 @@
                                                         </td>
                                                         <td><?php
                                                         if ($row["status"] == "Awaiting approval from DC") {
-                                                            echo "<button type='submit' name='reject' class='btn btn-default btn-sm' >Reject</button>";
+                                                            echo "<button type='submit' name='reject' class='btn btn-default btn-sm' onclick=\"rejectd($ID)\" >Reject</button>";
                                                         }
                                                         else
                                                             echo "<button type='submit' class='btn btn-default btn-sm' disabled>Reject</button>";
                                                         ?>
                                                         </td>
+														
+														
                                                     </tr>
                                             <?php 
                                             }
@@ -269,6 +233,39 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
+	<script>
+	
+	// Remove row
+			function acceptd(id) {
+				if(confirm("Are you sure?")==true){
+					
+					$.post('acceptbydc.php',{postid:id}, function(data){
+						alert("Request Accepted");
+						
+					});
+				}
+				$( "#requests" ).load( "corporateReportView.php #requests" );
+			}
+		</script>
+		
+		<script>
+	
+	// Remove row
+			function rejectd(id) {
+				
+				if(confirm("Are you sure?")==true){
+					
+					$.post('rejectbydc.php',{postid:id}, function(data){
+							alert("Request rejected");
+						
+					});
+				}
+				$( "#requests" ).load( "corporateReportView.php #requests" );
+			
+			}
+		</script>
+	
+	
 </body>
 
 </html>
