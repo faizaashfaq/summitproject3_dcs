@@ -230,10 +230,10 @@
 						  <div class="form-group">
                                 <label>Request for</label>
                                 <select class="form-control" name="requestfor">
-                                    <option value="Commecial Data Center Karachi">Commercial Data Center Karachi</option>
+                                    <option value="Commercial Data Center Karachi">Commercial Data Center Karachi</option>
                                     <option value="IT Data Center Karachi">IT Data Center Karachi</option>
-                                    <option value="Commecial Data Center Lahore">Commercial Data Center Lahore</option>
-									 <option value="Commecial Data Center Lahore">IT Data Center Islamabad</option>
+                                    <option value="Commercial Data Center Lahore">Commercial Data Center Lahore</option>
+									 <option value="IT Data Center Lahore">IT Data Center Islamabad</option>
                                 </select>
                             </div>
 							</div>

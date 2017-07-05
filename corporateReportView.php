@@ -227,7 +227,7 @@
 	
 	// Remove row
 			function accept(id) {
-				if(confirm("Are you sure?hhh")==true){
+				if(confirm("Are you sure?")==true){
 					
 					$.post('acceptbykam.php',{postid:id}, function(data){
 						alert("Request Accepted");
