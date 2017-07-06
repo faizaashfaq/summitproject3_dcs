@@ -4,6 +4,8 @@
         header("Location: index.php");
         exit();
     }
+	
+
 ?>
 
 
@@ -20,6 +22,7 @@
     <meta name="author" content="">
 
     <title>Welcome <?php echo $_SESSION['user']?></title>
+	
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">

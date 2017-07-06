@@ -105,10 +105,14 @@
 
         $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM, clientid , permission , enviornment , remarks) VALUES('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."',  '".$clientid."', '".$permission."', '".$enviornment."', '".$remarks."')";
         if($conn->query($sql)===TRUE){
-            echo "New Row added Successfully";
-			
-	    					header("Location: customerDashboard.php"); //to the customer dashboard
-	    					exit();
+             echo "
+            <script type=\"text/javascript\">
+            alert(\"Request Generated Successfully\");
+            </script>
+        ";
+		
+		
+		
         }
         else {
             print_r( "Error: " . $sql . "<br>" . $conn->error); exit();
@@ -280,7 +284,7 @@
 							<label> Start date & time of Visit </label>
 								<div class='input-group date' id='datetimepicker6' >
 								
-									<input type='text' class="form-control" name="timein" required />
+									<input type='text' class="form-control" name="timein" placeholder="mm/dd/yyyy 00:00 AM" required />
 									<span class="input-group-addon">
 										<span class="glyphicon glyphicon-calendar"></span>
 									</span>
@@ -292,7 +296,7 @@
 							<label> End date & time of Visit </label>
 								<div class='input-group date' id='datetimepicker7' >
 								
-									<input type='text' class="form-control" name="timeout" required />
+									<input type='text' class="form-control" name="timeout" placeholder="mm/dd/yyyy 00:00 AM" required />
 									<span class="input-group-addon">
 										<span class="glyphicon glyphicon-calendar"></span>
 									</span>
@@ -305,14 +309,14 @@
 								<div class="form-group">
                                 <label>Name of the visitor</label>
                                 <input class="form-control" name="name" id='name' required>
-                               
+                               <p class="help-block">In case of more than one name, kindly use commas.</p>
 								</div>
 							</div>
 							<div class='col-md-12'>
                             <div class="form-group">
                                 <label>CNIC</label>
                                 <input type="text" maxlength="13 "class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
-                               
+                               <p class="help-block">In case of more than one CNICs, kindly use commas.</p>
                             </div>
 							
 							</div>	
@@ -465,8 +469,8 @@
 									?>
      
 							<div class="form-group">
-                                <button type="submit" class="btn btn-default" >Submit Button</button>
-                            <button type="reset" class="btn btn-default">Reset Button</button>
+                            <button type="submit" class="btn btn-default" >Submit</button>
+                          
                             </div>
 						</div>
 
