@@ -250,7 +250,7 @@
                                         }
                                         echo("Connection Successful");
                                         echo($_SESSION['user']);
-                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM customerrequest WHERE clientid=".$_SESSION['id'];
+                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM corrective WHERE clientid=".$_SESSION['id'];
                                         $result = $conn->query($sql);
 
                                         if($result->num_rows > 0){
@@ -261,7 +261,7 @@
                                                         <td><?php echo $row["requestdate"] ?></td>
                                                         <td><?php echo $row["requesttime"] ?></td>
                                                         <td><?php echo $row["status"] ?></td>
-                                                        <td><a class="btn btn-default btn-sm" href="customerRequestView.php?id=<?php echo $row['id'];?>">View</a></td>
+                                                        <td><a class="btn btn-default btn-sm" href="correctiveview.php?id=<?php echo $row['id'];?>">View</a></td>
 														<td><a href="javascript:removeRow(' <?php echo $row["id"] ?> ');" class="btn btn-default btn-sm">Delete</a></td>
                                                     </tr>
                                             <?php
@@ -304,7 +304,7 @@
 	
 				$.post('delete.php',{postid:id}, function(data){
 					
-					$( "#requests" ).load( "customerDashboard.php #requests" );
+					$( "#requests" ).load( "customerDashboard2.php #requests" );
 				});
 			
 			}

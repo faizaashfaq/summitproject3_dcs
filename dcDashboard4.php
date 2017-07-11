@@ -1,15 +1,10 @@
 <?php
     session_start();
-    if($_SESSION['user']=="" || $_SESSION['role'] != 0){
+    if($_SESSION['user']=="" || $_SESSION['role'] != 1 && $_SESSION['role'] != 2 && $_SESSION['role'] != 3 && $_SESSION['role'] != 4){
         header("Location: index.php");
         exit();
     }
-	
-
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,7 +17,6 @@
     <meta name="author" content="">
 
     <title>Welcome <?php echo $_SESSION['user']?></title>
-	
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -83,26 +77,13 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
-                        <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Request Visit</a>
-                    </li>
-					 <li >
-                        <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Corrective Form</a>
-                    </li>
-					<li>
-                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
-                    </li>
-					<li>
-                        <a href="#"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                        <a href="dcDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </nav>
 
-		
         <div id="page-wrapper">
 
             <div class="container-fluid">
@@ -110,12 +91,12 @@
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 id="header" class="page-header">
+                        <h1 class="page-header">
                             Dashboard
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="customerDashboard.php">Dashboard</a>
+                                <i class="fa fa-dashboard"></i>  <a href="dcDashboard.php">Dashboard</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-table"></i> Status Report
@@ -125,7 +106,8 @@
                 </div>
                 <!-- /.row -->
 
-				<div class="row">
+				
+					<div class="row">
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
@@ -139,7 +121,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="customerDashboard.php">
+                            <a href="dcDashboard.php">
                                 <div class="panel-footer">
                                     <span class="pull-left">View Details</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -161,7 +143,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="customerDashboard2.php">
+                            <a href="dcDashboard2.php">
                                 <div class="panel-footer">
                                     <span class="pull-left">View Details</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -183,7 +165,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="customerDashboard3.php">
+                            <a href="dcDashboard3.php">
                                 <div class="panel-footer">
                                     <span class="pull-left">View Details</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -205,7 +187,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="customerDashboard4.php">
+                            <a href="dcDashboard4.php">
                                 <div class="panel-footer">
                                     <span class="pull-left">View Details</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -219,10 +201,14 @@
 				
 				
 				
+				
+				
+				
                 <div class="row">
                     <div class="col-lg-12">
+                        <h2>New Visit Requests</h2>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped" id="requests">
+                            <table class="table table-bordered table-hover table-striped">
                                 <thead>
                                     <tr>
                                         <th>Request ID:</th>
@@ -230,12 +216,12 @@
                                         <th>Request generated on date:</th>
                                         <th>Request generated on time:</th>
                                         <th>Status:</th>
-                                        <th>Report:</th>
-										<th>Edit:</th>
+                                        <th>View Report:</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tablebody">
                                     <?php
+
                                         //database access
                                         $servername = "localhost";
                                         $user = "root";
@@ -249,9 +235,23 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                         echo("Connection Successful");
-                                        echo($_SESSION['user']);
-                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM customerrequest WHERE clientid=".$_SESSION['id'];
-                                        $result = $conn->query($sql);
+										
+										if($_SESSION['role'] == 1){
+											$DC="Commercial Data Center Lahore";
+										}else if ($_SESSION['role'] == 2){	
+												$DC="IT Data Center Islamabad";
+											  }else if($_SESSION['role'] == 3){
+												  $DC="Commercial Data Center Karachi";
+													}else if($_SESSION['role'] == 4){
+														$DC="IT Data Center Karachi";
+															}
+										echo $DC;
+										
+										
+                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM customerrequest WHERE requestfor='".$DC."' AND status ='Accepted'";
+                                        
+										
+										$result = $conn->query($sql);
 
                                         if($result->num_rows > 0){
                                             while($row = $result->fetch_assoc()){ ?>
@@ -261,26 +261,108 @@
                                                         <td><?php echo $row["requestdate"] ?></td>
                                                         <td><?php echo $row["requesttime"] ?></td>
                                                         <td><?php echo $row["status"] ?></td>
-                                                        <td><a class="btn btn-default btn-sm" href="customerRequestView.php?id=<?php echo $row['id'];?>">View</a></td>
-														<td><a href="javascript:removeRow(' <?php echo $row["id"] ?> ');" class="btn btn-default btn-sm">Delete</a></td>
+                                                        <td><a class="btn btn-default btn-sm" href="dcReportView.php?id=<?php echo $row['id'];?>">View</a></td>
                                                     </tr>
                                             <?php
                                             }
                                         }
-											?>
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
-						
 						 <div class="col-md-12 text-center">
 					  <ul class="pagination pagination-lg pager" id="myPager"></ul>
 					  </div>
-	  
-	  
                     </div>
                 </div>
                 <!-- /.row -->
 
+				
+				
+				
+				
+				<div class="row">
+                    <div class="col-lg-12">
+                        <h2>Maintenance Requests</h2>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Request ID:</th>
+                                        <th>Request generated for:</th>
+                                        <th>Request generated on date:</th>
+                                        <th>Request generated on time:</th>
+                                        <th>Status:</th>
+                                        <th>View Report:</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablebody1">
+                                    <?php
+
+                                        //database access
+                                        $servername = "localhost";
+                                        $user = "root";
+                                        $pass = "";
+                                        $dbname = "datacenter";
+
+                                        //establishing connection
+                                        $conn = new mysqli($servername, $user, $pass, $dbname);
+
+                                        if($conn -> connect_error){
+                                            die("Connection Failed: ". $conn->connect_error);
+                                        }
+                                        echo("Connection Successful");
+										
+										if($_SESSION['role'] == 1){
+											$DC="Commercial Data Center Lahore";
+										}else if ($_SESSION['role'] == 2){	
+												$DC="IT Data Center Islamabad";
+											  }else if($_SESSION['role'] == 3){
+												  $DC="Commercial Data Center Karachi";
+													}else if($_SESSION['role'] == 4){
+														$DC="IT Data Center Karachi";
+															}
+										echo $DC;
+										
+										
+                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM corrective WHERE requestfor='".$DC."'  AND status ='Accepted'";
+                                        
+										
+										$result = $conn->query($sql);
+
+                                        if($result->num_rows > 0){
+                                            while($row = $result->fetch_assoc()){ ?>
+                                                    <tr>
+                                                        <td><?php echo $row["id"] ?></td>
+                                                        <td><?php echo $row["requestfor"] ?></td>
+                                                        <td><?php echo $row["requestdate"] ?></td>
+                                                        <td><?php echo $row["requesttime"] ?></td>
+                                                        <td><?php echo $row["status"] ?></td>
+                                                        <td><a class="btn btn-default btn-sm" href="dccorrectiveview.php?id=<?php echo $row['id'];?>">View</a></td>
+                                                    </tr>
+                                            <?php
+                                            }
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+						 <div class="col-md-12 text-center">
+					  <ul class="pagination pagination-lg pager" id="myPager1"></ul>
+					  </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+				
+				
+				
+				
+				
+				
+				
+				
+				
             </div>
             <!-- /.container-fluid -->
 
@@ -295,22 +377,7 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
-	<script>
 	
-	// Remove row
-			function removeRow(id) {
-				
-	
-				$.post('delete.php',{postid:id}, function(data){
-					
-					$( "#requests" ).load( "customerDashboard.php #requests" );
-				});
-			
-			}
-		</script>
-		
-		
 		<script>
 		
 		$.fn.pageMe = function(opts){
@@ -417,14 +484,127 @@
 
 $(document).ready(function(){
     
-  $('#tablebody').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:7});
+  $('#tablebody').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:5});
     
 });
 		
 		
 		</script>
+
+		<script>
+		
+		$.fn.pageMe = function(opts){
+    var $this = this,
+        defaults = {
+            perPage: 7,
+            showPrevNext: false,
+            hidePageNumbers: false
+        },
+        settings = $.extend(defaults, opts);
+    
+    var listElement = $this;
+    var perPage = settings.perPage; 
+    var children = listElement.children();
+    var pager = $('.pager');
+    
+    if (typeof settings.childSelector!="undefined") {
+        children = listElement.find(settings.childSelector);
+    }
+    
+    if (typeof settings.pagerSelector!="undefined") {
+        pager = $(settings.pagerSelector);
+    }
+    
+    var numItems = children.size();
+    var numPages = Math.ceil(numItems/perPage);
+
+    pager.data("curr",0);
+    
+    if (settings.showPrevNext){
+        $('<li><a href="#" class="prev_link">«</a></li>').appendTo(pager);
+    }
+    
+    var curr = 0;
+    while(numPages > curr && (settings.hidePageNumbers==false)){
+        $('<li><a href="#" class="page_link">'+(curr+1)+'</a></li>').appendTo(pager);
+        curr++;
+    }
+    
+    if (settings.showPrevNext){
+        $('<li><a href="#" class="next_link">»</a></li>').appendTo(pager);
+    }
+    
+    pager.find('.page_link:first').addClass('active');
+    pager.find('.prev_link').hide();
+    if (numPages<=1) {
+        pager.find('.next_link').hide();
+    }
+      pager.children().eq(1).addClass("active");
+    
+    children.hide();
+    children.slice(0, perPage).show();
+    
+    pager.find('li .page_link').click(function(){
+        var clickedPage = $(this).html().valueOf()-1;
+        goTo(clickedPage,perPage);
+        return false;
+    });
+    pager.find('li .prev_link').click(function(){
+        previous();
+        return false;
+    });
+    pager.find('li .next_link').click(function(){
+        next();
+        return false;
+    });
+    
+    function previous(){
+        var goToPage = parseInt(pager.data("curr")) - 1;
+        goTo(goToPage);
+    }
+     
+    function next(){
+        goToPage = parseInt(pager.data("curr")) + 1;
+        goTo(goToPage);
+    }
+    
+    function goTo(page){
+        var startAt = page * perPage,
+            endOn = startAt + perPage;
+        
+        children.css('display','none').slice(startAt, endOn).show();
+        
+        if (page>=1) {
+            pager.find('.prev_link').show();
+        }
+        else {
+            pager.find('.prev_link').hide();
+        }
+        
+        if (page<(numPages-1)) {
+            pager.find('.next_link').show();
+        }
+        else {
+            pager.find('.next_link').hide();
+        }
+        
+        pager.data("curr",page);
+      	pager.children().removeClass("active");
+        pager.children().eq(page+1).addClass("active");
+    
+    }
+};
+
+$(document).ready(function(){
+    
+  $('#tablebody1').pageMe({pagerSelector:'#myPager1',showPrevNext:true,hidePageNumbers:false,perPage:5});
+    
+});
 		
 		
+		</script>
+
 </body>
 
 </html>
+s
