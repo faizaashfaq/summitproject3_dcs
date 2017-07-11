@@ -137,6 +137,7 @@
                                         <th>Hardware Installation:</th>
                                         <th>Servers/Equipments Maintanence activity:</th>
                                         <th>Status:</th>
+										<th>Reason:</th>
                                         <th>Approve:</th>
                                         <th>Reject:</th>
                                     </tr>
@@ -157,7 +158,7 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                         echo("Connection Successful");
-                                        $sql = "SELECT id, clientid, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status FROM customerrequest WHERE id = ".$ID."";
+                                        $sql = "SELECT id, clientid, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status, reason FROM customerrequest WHERE id = ".$ID."";
                                         $result = $conn->query($sql);
                                         if($result->num_rows > 0){
                                             while($row = $result->fetch_assoc()){
@@ -181,7 +182,7 @@
                                                         <td><?php echo $row["hardware"] ?></td>
                                                         <td><?php echo $row["maintanence"] ?></td>
                                                         <td><?php echo $row["status"] ?></td>
-														
+														<td><?php echo $row["reason"] ?></td>
 														
 														<td><?php
                                                         if ($row["status"] == "Awaiting approval from DC") {
@@ -253,13 +254,17 @@
 	// Remove row
 			function rejectd(id) {
 				
-				if(confirm("Are you sure?")==true){
-					
-					$.post('rejectbydc.php',{postid:id}, function(data){
+				var reason=prompt("Please enter reason");
+				
+				 if (reason == null || reason == "") {
+						
+					} else {
+						$.post('rejectbydc.php',{postid:id, postreason:reason}, function(data){
 							alert("Request rejected");
 						
 					});
-				}
+					}
+				
 				$( "#requests" ).load( "corporateReportView.php #requests" );
 			
 			}

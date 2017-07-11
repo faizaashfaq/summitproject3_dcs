@@ -136,6 +136,7 @@
                                         <th>Hardware Installation:</th>
                                         <th>Servers/Equipments Maintanence activity:</th>
                                         <th>Status:</th>
+										 <th>Reason:</th>
 										<th>Accept:</th>
                                         <th>Reject:</th>
                                     </tr>
@@ -154,7 +155,7 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                         echo("Connection Successful");
-                                        $sql = "SELECT id, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status FROM customerrequest WHERE id = ".$ID." LIMIT 10";
+                                        $sql = "SELECT id, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status, reason FROM customerrequest WHERE id = ".$ID." LIMIT 10";
                                         $result = $conn->query($sql);
                                         if($result->num_rows > 0){
                                             while($row = $result->fetch_assoc()){
@@ -178,6 +179,7 @@
                                                         <td><?php echo $row["hardware"] ?></td>
 														<td><?php echo $row["maintanence"] ?></td>
                                                         <td><?php echo $row["status"] ?></td>
+														<td><?php echo $row["reason"] ?></td>
 														<td><?php
                                                         if ($row["status"] == "Awaiting approval from KAM") {
                                                             echo "<button type='submit' name='approve' class='btn btn-default btn-sm' onclick=\"accept($ID)\" >Approve</button>";
@@ -243,13 +245,16 @@
 	// Remove row
 			function rejecta(id) {
 				
-				if(confirm("Are you sure?")==true){
-					
-					$.post('rejectbykam.php',{postid:id}, function(data){
+			var reason=prompt("Please enter reason");
+				
+				 if (reason == null || reason == "") {
+						
+					} else {
+						$.post('rejectbykam.php',{postid:id, postreason:reason}, function(data){
 							alert("Request rejected");
 						
 					});
-				}
+					}
 				$( "#requests" ).load( "corporateReportView.php #requests" );
 			
 			}

@@ -68,22 +68,20 @@
         $name = $_POST["name"];
         $nic = $_POST["nic"];
         $company = $_POST["company"];
-		$kam = $_POST["KAM"];
+		$officer = $_POST["officer"];
         $timein = $_POST["timein"];
         $timeout = $_POST["timeout"];
         $workdetails = $_POST["workdetails"];
         $equipments = $_POST["equipments"];
         $workedon = $_POST["workedon"];
-        $shutdown = $_POST["shutdown"];
-        $software = $_POST["software"];
-        $hardware = $_POST["hardware"];
         $maintanence = $_POST["maintanence"];
         $requestfor = $_POST["requestfor"];
-		$permission = $_POST["permission"];
-		$enviornment = $_POST["enviornment"];
-		$remarks = $_POST["remarks"];
+		$wstatus = $_POST["remarks"];
+		$riskfactor=$_POST["riskfactor"];
+		$wprogress = $_POST["workinprogress"];
+		$impact = $_POST["impact"];
 		$clientid=$_SESSION['id'];
-        $status = "Awaiting approval from KAM";
+        $status = "Awaiting approval from DC";
 
         date_default_timezone_set("Asia/Karachi");
         $requestDate = date("Y/m/d");
@@ -103,17 +101,9 @@
         }
         echo "Connection Successful";
 
-        $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM, clientid , permission , enviornment , remarks) VALUES('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."',  '".$clientid."', '".$permission."', '".$enviornment."', '".$remarks."')";
+        $sql = "INSERT INTO corrective (clientid, requesttime, requestdate,	requestfor, name, nic, vendor, timein, timeout, officer, maintenance, tools, workedon, impact, riskfactor, equipmentmarked, mainbreaker, workcompletion, status) VALUES
+								('".$clientid."','".$requestTime."', '".$requestDate."', '".$requestfor."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$officer."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$impact."', '".$riskfactor."', '".$wprogress."', '".$maintanence."', '".$wstatus."',  '".$status."')";
         if($conn->query($sql)===TRUE){
-<<<<<<< HEAD
-            echo "New Row added Successfully";
-			                 
-            //Mail function
-            
-            //End Mail
-            header("Location: customerDashboard.php"); //to the customer dashboard
-	    	exit();
-=======
              echo "
             <script type=\"text/javascript\">
             alert(\"Request Generated Successfully\");
@@ -122,7 +112,6 @@
 		
 		
 		
->>>>>>> 9b91998ff0b78d53fad45666d2ddacc3ab4704a2
         }
         else {
             print_r( "Error: " . $sql . "<br>" . $conn->error); exit();
@@ -185,12 +174,13 @@
                     <li >
                         <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li >
-                    <li class="active">
+                    <li >
                         <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> New Request</a>
                     </li>
-						 <li >
+					 <li class="active">
                         <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Corrective Form</a>
                     </li>
+					
 					<li>
                         <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
                     </li>
@@ -217,7 +207,7 @@
                                 <i class="fa fa-dashboard"></i>  <a href="customerDashboard.php">Dashboard</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-edit"></i> Routine Activity Form
+                                <i class="fa fa-edit"></i> Maintanence Activity
                             </li>
                         </ol>
                     </div>
@@ -257,37 +247,8 @@
 							<div class='col-md-12'>
      
 							   <div class="form-group">
-                                <label>Name of the KAM</label>
-                                 <select class="form-control" name="KAM">
-								   <?php
-                                        //database access
-                                        $servername = "localhost";
-                                        $user = "root";
-                                        $pass = "";
-                                        $dbname = "datacenter";
-
-                                        //establishing connection
-                                        $conn = new mysqli($servername, $user, $pass, $dbname);
-
-                                        if($conn -> connect_error){
-                                            die("Connection Failed: ". $conn->connect_error);
-                                        }
-                                        echo("Connection Successful");
-                                        echo($_SESSION['user']);
-                                        $sql = "SELECT id, Name, role FROM users WHERE role=5";
-                                        $result = $conn->query($sql);
-
-                                        if($result->num_rows > 0){
-                                            while($row = $result->fetch_assoc()){ ?>
-											<option value=<?php echo $row["Name"] ?>><?php echo $row["Name"] ?></option>
-
-                                            <?php
-                                            }
-                                        }
-											?>
-								 
-                                    
-                                </select>
+                                <label>PTCL Officer(Name & Designation)</label>
+                                <input class="form-control" name="officer" id='officer' required>
                             </div>
 						</div>
 
@@ -327,7 +288,7 @@
 							<div class='col-md-12'>
                             <div class="form-group">
                                 <label>CNIC</label>
-                                <input type="text" pattern=".{13,13}" class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                <input type="text" pattern=".{13,13}"   class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                                <p class="help-block">In case of more than one CNICs, kindly use commas.</p>
                             </div>
 							
@@ -339,7 +300,7 @@
 						<div class='col-md-12'>
      
 							   <div class="form-group">
-                                <label>Company</label>
+                                <label>Name of the Vendor</label>
                                 <input class="form-control" name="company" required>
                             </div>
 						</div>
@@ -351,8 +312,8 @@
 						<div class='col-md-12'>
      
 							<div class="form-group">
-                                <label>Work Details</label>
-                                <textarea class="form-control" rows="3" name="workdetails"></textarea>
+                                <label>Maintenance / Corrective measures required (Detail) with Location:</label>
+                                <textarea class="form-control" rows=5"" name="workdetails"></textarea>
                             </div>
 						</div>
 
@@ -360,7 +321,7 @@
 						<div class='col-md-12'>
      
 							<div class="form-group">
-                                <label>Equipment Accompanying</label>
+                                <label>Tools accompanying:</label>
                                  <textarea class="form-control" rows="3" name="equipments"></textarea>
                             </div>
 						</div>
@@ -368,7 +329,7 @@
 						<div class='col-md-12'>
      
 							<div class="form-group">
-                                <label>Servers/Equipments/AC Units to be worked on</label>
+                                <label>CRAC Unit / UPS / etc.,  to be worked on :</label>
                                
 								  <textarea class="form-control" rows="3" name="workedon"></textarea>
                             </div>
@@ -378,97 +339,63 @@
                           
                     <div class="col-lg-12">
                          <div class="form-group">
-                                <label>Server Shutdown Required</label>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="shutdown" value="Yes" checked>Yes
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="shutdown" value="No">No
-                                    </label>
-                                </div>
+                                <label>Any Impact to DC Services</label>
+                                 <label class="radio-inline">
+                                    <input type="radio" name="impact" id="impacty" value="Yes" checked>Yes
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="impact" id="impactn" value="No">No
+                                </label>
+                            </div>
+					
+     
+							<div class="form-group">
+                                <label>Please mention risk factor:</label>
+                               
+								  <textarea class="form-control" rows="3" name="riskfactor"></textarea>
+                            </div>
+						
+
+                            <div class="form-group">
+                                <label>Safeties to be checked by Activity Supervisor (Mandatory)</label>
+                           
                             </div>
 
                             <div class="form-group">
-                                <label>Software Installation</label>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="software" value="Yes" checked>Yes
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="software" value="No">No
-                                    </label>
-                                </div>
+                                <label>Equipment Marked ‘Do not Operate /  Work in Progress’</label>
+                           <label class="radio-inline">
+                                    <input type="radio" name="workinprogress" id="progressy" value="Yes" checked>Yes
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="workinprogress" id="progressn" value="No">No
+                                </label>
                             </div>
 
                             <div class="form-group">
-                                <label>Hardware Installation/Replacement</label>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="hardware" value="Yes" checked>Yes
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="hardware" value="No">No
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Servers/Equipment Maintanence Activity</label>
-                                <div class="radio">
-                                    <label>
+                                <label>Main breaker at MCC/LT Panel Off</label>
+                                
+                                    <label class="radio-inline">
                                         <input type="radio" name="maintanence" value="Yes" checked>Yes
                                     </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
+                              
+                                    <label class="radio-inline">
                                         <input type="radio" name="maintanence" value="No">No
                                     </label>
-                                </div>
+                               
                             </div>
                     </div>
                
                             
 
-                          	<div class='col-md-12'>
-     
-						 <div class="form-group">
-                                <label>Permission from DC Shift Personnel </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="permission" id="permissiony" value="Yes" checked>Yes
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="permission" id="permissionn" value="No">No
-                                </label>
-                               
-                            </div>
-						</div>
+                          	
 						
-						 	<div class='col-md-12'>
-     
-						 <div class="form-group">
-                                <label>Satisfied from DC enviornment</label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="enviornment" id="satisfies" value="Yes" checked>Yes
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="enviornment" id="not-satisfied" value="No">No
-                                </label>
-                               
-                            </div>
-						</div>
+						
 						
 						<div class='col-md-12'>
      
 							<div class="form-group">
-                                <label>Remarks (if any)</label>
-                                <textarea class="form-control" rows="3" name="remarks"></textarea>
+                                <label>Work completion Status in Detail:</label>
+                                <textarea class="form-control" rows="3" name="remarks" required></textarea>
                             </div>
 						</div>
                           

@@ -1,6 +1,7 @@
 <?php
 
 $id=$_POST['postid'];
+$reason=$_POST['postreason'];
 
 		$servername = "localhost";
         $user = "root";
@@ -14,6 +15,8 @@ $id=$_POST['postid'];
         }
         echo "Connection Successful";
         $sql = "UPDATE customerrequest SET status= 'Rejected by DC' WHERE id = '".$id."' ";
+        $conn->query($sql);
+		$sql = "UPDATE customerrequest SET reason= '".$reason."' WHERE id = '".$id."' ";
         $conn->query($sql);
         $conn->close();
 				

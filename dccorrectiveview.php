@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if($_SESSION['user']=="" || $_SESSION['role'] != 0){
+    if($_SESSION['user']=="" || $_SESSION['role'] != 1 && $_SESSION['role'] != 2 && $_SESSION['role'] != 3 && $_SESSION['role'] != 4){
         header("Location: index.php");
         exit();
     }
@@ -38,31 +38,7 @@
 </head>
 
 <body>
-    <?php
-    $id = "";
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $servername = "localhost";
-        $user = "root";
-        $pass = "";
-        $dbname = "datacenter";
-
-        $conn = new mysqli($servername, $user, $pass, $dbname);
-
-        if($conn -> connect_error){
-            die("Connection Failed: " . $conn->connect_error);
-        }
-        echo "Connection Successful";
-        $sql = "UPDATE customerrequest SET status= 'Awaiting approval from DC' WHERE id = '".$_POST["id"]."' ";
-
-        if($conn->query($sql)===TRUE){
-            echo "Record Updated Successfully";
-        }
-        else{
-            echo "Record update failure";
-        }
-        $conn->close();
-    }
-    ?>
+   
 
     <div id="wrapper">
 
@@ -102,18 +78,11 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="dcDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
+                    </li>
                     <li class="active">
-                        <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Request Visit</a>
-                    </li>
-                
-                    <li>
-                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                        <a href="dcReportView.php?id=<?php echo $_GET['id'];?>"><i class="fa fa-fw fa-table"></i> Report View</a>
                     </li>
                 </ul>
             </div>
@@ -132,7 +101,7 @@
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="customerDashboard.php">Dashboard</a>
+                                <i class="fa fa-dashboard"></i>  <a href="dcDashboard.php">Dashboard</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-table"></i> Report View
@@ -146,27 +115,33 @@
                     <div class="col-lg-12">
                         <h2>Report View</h2>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped">
-                                <thead>
+                        <form method="post" role="form" style="display: block;" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]."?id=".urlencode($_GET['id']));?>";">
+                            <table class="table table-bordered table-hover table-striped" id="requests">
+                                  <thead>
                                     <tr>
                                         <th>Request ID:</th>
                                         <th>Client ID:</th>
                                         <th>Request generated for:</th>
                                         <th>Request generated on date:</th>
                                         <th>Request generated on time:</th>
+										<th>PTCL Officer:</th>
                                         <th>Name:</th>
                                         <th>NIC:</th>
-                                        <th>Company:</th>
+                                        <th>Vendor:</th>
                                         <th>Time in:</th>
                                         <th>Time out:</th>
-                                        <th>Work Details:</th>
-                                        <th>Equipments Accompanied:</th>
-                                        <th>Servers/Equipments/ACs unit to be worked upon:</th>
-                                        <th>Server shutdown required:</th>
-                                        <th>Software Installation:</th>
-                                        <th>Hardware Installation:</th>
-                                        <th>Servers/Equipments Maintanence activity:</th>
+                                        <th>Maintanence measures required:</th>
+                                        <th>Tools Accompanied:</th>
+                                        <th>CRAC Unit/UPS/etc., to be worked on:</th>
+                                        <th>Impact on DC Services:</th>
+                                        <th>Risk Factor:</th>
+                                        <th>Equipmet Marked 'Do not operate/ Work in Progress:</th>
+                                        <th>Main breaker at MCC/LT Panel Off:</th>
+										<th>Work Completion status:</th>
                                         <th>Status:</th>
+										<th>Reason:</th>
+										<th>Approve:</th>
+                                        <th>Reject:</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -185,7 +160,8 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                         echo("Connection Successful");
-                                        $sql = "SELECT id, clientid, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status FROM customerrequest WHERE id = ".$ID."";
+										 $sql = "SELECT id, clientid, requesttime, requestdate,	requestfor, name, nic, vendor, timein, timeout, officer, maintenance, tools, workedon, impact, riskfactor, equipmentmarked, mainbreaker, workcompletion, status, reason FROM corrective WHERE id = ".$ID."";
+                                       
                                         $result = $conn->query($sql);
                                         if($result->num_rows > 0){
                                             while($row = $result->fetch_assoc()){
@@ -196,29 +172,52 @@
                                                         <td><?php echo $row["requestfor"] ?></td>
                                                         <td><?php echo $row["requestdate"] ?></td>
                                                         <td><?php echo $row["requesttime"] ?></td>
+                                                        <td><?php echo $row["officer"] ?></td>
                                                         <td><?php echo $row["name"] ?></td>
                                                         <td><?php echo $row["nic"] ?></td>
-                                                        <td><?php echo $row["company"] ?></td>
+                                                        <td><?php echo $row["vendor"] ?></td>
                                                         <td><?php echo $row["timein"] ?></td>
                                                         <td><?php echo $row["timeout"] ?></td>
-                                                        <td><?php echo $row["workdetails"] ?></td>
-                                                        <td><?php echo $row["equipments"] ?></td>
+                                                        <td><?php echo $row["maintenance"] ?></td>
+                                                        <td><?php echo $row["tools"] ?></td>
                                                         <td><?php echo $row["workedon"] ?></td>
-                                                        <td><?php echo $row["shutdown"] ?></td>
-                                                        <td><?php echo $row["software"] ?></td>
-                                                        <td><?php echo $row["hardware"] ?></td>
-                                                        <td><?php echo $row["maintanence"] ?></td>
-                                                        <td><?php echo $row["status"] ?></td>
+                                                        <td><?php echo $row["impact"] ?></td>
+                                                        <td><?php echo $row["riskfactor"] ?></td>
+														 <td><?php echo $row["equipmentmarked"] ?></td>
+                                                        <td><?php echo $row["mainbreaker"] ?></td>
+                                                        <td><?php echo $row["workcompletion"] ?></td>
+														<td><?php echo $row["status"] ?></td>
+														<td><?php echo $row["reason"] ?></td>
+														
+														
+														<td><?php
+                                                        if ($row["status"] == "Awaiting approval from DC") {
+                                                            echo "<button type='submit' name='approve' class='btn btn-default btn-sm' onclick=\"acceptd($ID)\" >Approve</button>";
+                                                        }
+                                                        else
+                                                            echo "<button type='submit' class='btn btn-default btn-sm' disabled>Approve</button>";
+                                                        ?>
+                                                        </td>
+                                                        <td><?php
+                                                        if ($row["status"] == "Awaiting approval from DC") {
+                                                            echo "<button type='submit' name='reject' class='btn btn-default btn-sm' onclick=\"rejectd($ID)\" >Reject</button>";
+                                                        }
+                                                        else
+                                                            echo "<button type='submit' class='btn btn-default btn-sm' disabled>Reject</button>";
+                                                        ?>
+                                                        </td>
+														
+														
                                                     </tr>
                                             <?php 
                                             }
                                         }
 
-                                            else echo("No result");
+                                            
                                     ?>
                                 </tbody>
                             </table>
-                            
+                            </form>
                             
                             
                         </div>
@@ -241,6 +240,44 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
+	<script>
+	
+	// Remove row
+			function acceptd(id) {
+				if(confirm("Are you sure?")==true){
+					
+					$.post('acceptbydc1.php',{postid:id}, function(data){
+						alert("Request Accepted");
+						
+					});
+				}
+				$( "#requests" ).load( "dccorrectiveview.php #requests" );
+			}
+		</script>
+		
+		<script>
+	
+	// Remove row
+			function rejectd(id) {
+				var reason=prompt("Please enter reason");
+				
+				 if (reason == null || reason == "") {
+						
+					} else {
+						$.post('rejectbydc1.php',{postid:id, postreason:reason}, function(data){
+							alert("Request rejected");
+						
+					});
+					}
+				
+				
+	
+				$( "#requests" ).load( "dccorrectiveview.php #requests" );
+			
+			}
+		</script>
+	
+	
 </body>
 
 </html>

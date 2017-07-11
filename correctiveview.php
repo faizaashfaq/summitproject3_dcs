@@ -108,7 +108,9 @@
                     <li>
                         <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Request Visit</a>
                     </li>
-                
+                 <li >
+                        <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Corrective Form</a>
+                    </li>
                     <li>
                         <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
                     </li>
@@ -154,19 +156,22 @@
                                         <th>Request generated for:</th>
                                         <th>Request generated on date:</th>
                                         <th>Request generated on time:</th>
+										<th>PTCL Officer:</th>
                                         <th>Name:</th>
                                         <th>NIC:</th>
-                                        <th>Company:</th>
+                                        <th>Vendor:</th>
                                         <th>Time in:</th>
                                         <th>Time out:</th>
-                                        <th>Work Details:</th>
-                                        <th>Equipments Accompanied:</th>
-                                        <th>Servers/Equipments/ACs unit to be worked upon:</th>
-                                        <th>Server shutdown required:</th>
-                                        <th>Software Installation:</th>
-                                        <th>Hardware Installation:</th>
-                                        <th>Servers/Equipments Maintanence activity:</th>
+                                        <th>Maintanence measures required:</th>
+                                        <th>Tools Accompanied:</th>
+                                        <th>CRAC Unit/UPS/etc., to be worked on:</th>
+                                        <th>Impact on DC Services:</th>
+                                        <th>Risk Factor:</th>
+                                        <th>Equipmet Marked 'Do not operate/ Work in Progress:</th>
+                                        <th>Main breaker at MCC/LT Panel Off:</th>
+										<th>Work Completion status:</th>
                                         <th>Status:</th>
+										<th>Reason:</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -185,7 +190,7 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                         echo("Connection Successful");
-                                        $sql = "SELECT id, clientid, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status FROM customerrequest WHERE id = ".$ID."";
+                                        $sql = "SELECT id, clientid, requesttime, requestdate,	requestfor, name, nic, vendor, timein, timeout, officer, maintenance, tools, workedon, impact, riskfactor, equipmentmarked, mainbreaker, workcompletion, status, reason FROM corrective WHERE id = ".$ID."";
                                         $result = $conn->query($sql);
                                         if($result->num_rows > 0){
                                             while($row = $result->fetch_assoc()){
@@ -196,19 +201,22 @@
                                                         <td><?php echo $row["requestfor"] ?></td>
                                                         <td><?php echo $row["requestdate"] ?></td>
                                                         <td><?php echo $row["requesttime"] ?></td>
+                                                        <td><?php echo $row["officer"] ?></td>
                                                         <td><?php echo $row["name"] ?></td>
                                                         <td><?php echo $row["nic"] ?></td>
-                                                        <td><?php echo $row["company"] ?></td>
+                                                        <td><?php echo $row["vendor"] ?></td>
                                                         <td><?php echo $row["timein"] ?></td>
                                                         <td><?php echo $row["timeout"] ?></td>
-                                                        <td><?php echo $row["workdetails"] ?></td>
-                                                        <td><?php echo $row["equipments"] ?></td>
+                                                        <td><?php echo $row["maintenance"] ?></td>
+                                                        <td><?php echo $row["tools"] ?></td>
                                                         <td><?php echo $row["workedon"] ?></td>
-                                                        <td><?php echo $row["shutdown"] ?></td>
-                                                        <td><?php echo $row["software"] ?></td>
-                                                        <td><?php echo $row["hardware"] ?></td>
-                                                        <td><?php echo $row["maintanence"] ?></td>
-                                                        <td><?php echo $row["status"] ?></td>
+                                                        <td><?php echo $row["impact"] ?></td>
+                                                        <td><?php echo $row["riskfactor"] ?></td>
+														 <td><?php echo $row["equipmentmarked"] ?></td>
+                                                        <td><?php echo $row["mainbreaker"] ?></td>
+                                                        <td><?php echo $row["workcompletion"] ?></td>
+														<td><?php echo $row["status"] ?></td>
+														<td><?php echo $row["reason"] ?></td>
                                                     </tr>
                                             <?php 
                                             }

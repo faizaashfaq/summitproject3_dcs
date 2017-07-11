@@ -14,9 +14,10 @@ $reason=$_POST['postreason'];
             die("Connection Failed: " . $conn->connect_error);
         }
         echo "Connection Successful";
-        $sql = "UPDATE customerrequest SET status= 'Rejected by KAM' WHERE id = '".$id."' ";
+        $sql = "UPDATE corrective SET status= 'Rejected by DC' WHERE id = '".$id."' ";
         $conn->query($sql);
-		$sql = "UPDATE customerrequest SET reason= '".$reason."' WHERE id = '".$id."' ";
+		
+		$sql = "UPDATE corrective SET reason= '".$reason."' WHERE id = '".$id."' ";
         $conn->query($sql);
         $conn->close();
 				
