@@ -81,8 +81,11 @@
                     <li>
                         <a href="dcDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li>
-                    <li class="active">
-                        <a href="dcReportView.php?id=<?php echo $_GET['id'];?>"><i class="fa fa-fw fa-table"></i> Report View</a>
+                  <li>
+                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
+                    </li>
+					<li>
+                        <a href="dcdocuments.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
                     </li>
                 </ul>
             </div>

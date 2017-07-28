@@ -89,13 +89,13 @@
                         <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Request Visit</a>
                     </li>
 					 <li >
-                        <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Corrective Form</a>
+                        <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Maintenance Form</a>
                     </li>
 					<li>
                         <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
                     </li>
 					<li>
-                        <a href="#"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                        <a href="documents.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
                     </li>
                 </ul>
             </div>

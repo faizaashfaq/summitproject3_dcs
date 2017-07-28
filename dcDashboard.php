@@ -79,6 +79,16 @@
                     <li class="active">
                         <a href="dcDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li>
+					 <li>
+                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
+                    </li>
+					<li>
+                        <a href="dcdocuments.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                    </li>
+					<li>
+                        <a href="capex.php"><i class="fa fa-fw fa-newspaper-o"></i> Cost</a>
+                    </li>
+				
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

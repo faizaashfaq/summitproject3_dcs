@@ -1,5 +1,5 @@
 <?php
-$id=$_POST['postid'];
+		$id=$_POST['postid'];
 		$servername = "localhost";
         $user = "root";
         $pass = "";
