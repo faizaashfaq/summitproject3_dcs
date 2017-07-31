@@ -105,7 +105,6 @@
 
         $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM, clientid , permission , enviornment , remarks) VALUES('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."',  '".$clientid."', '".$permission."', '".$enviornment."', '".$remarks."')";
         if($conn->query($sql)===TRUE){
-<<<<<<< HEAD
             echo "New Row added Successfully";
 			                 
             //Mail function
@@ -113,7 +112,6 @@
             //End Mail
             header("Location: customerDashboard.php"); //to the customer dashboard
 	    	exit();
-=======
              echo "
             <script type=\"text/javascript\">
             alert(\"Request Generated Successfully\");
@@ -121,8 +119,6 @@
         ";
 		
 		
-		
->>>>>>> 9b91998ff0b78d53fad45666d2ddacc3ab4704a2
         }
         else {
             print_r( "Error: " . $sql . "<br>" . $conn->error); exit();
