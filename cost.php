@@ -46,33 +46,108 @@
         $costdate = $_POST["costdate"];
         $costinfo = $_POST["costinfo"];
 
-            $servername = "localhost";
-            $user = "root";
-            $pass = "";
-            $dbname = "datacenter";
+        if($_SESSION['role'] == 1){
+                                            $DC="Commercial Data Center Lahore";
+                                        }else if ($_SESSION['role'] == 2){  
+                                                $DC="IT Data Center Islamabad";
+                                              }else if($_SESSION['role'] == 3){
+                                                  $DC="Commercial Data Center Karachi";
+                                                    }else if($_SESSION['role'] == 4){
+                                                        $DC="IT Data Center Karachi";
+                                                            }
 
-            $conn = new mysqli($servername, $user, $pass, $dbname);
+        $target_dir = "uploadscost/";
+        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+        $uploadOk = 1;
 
-            if($conn -> connect_error){
-                die("Connection Failed: " . $conn->connect_error);
+        $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+
+
+
+        date_default_timezone_set("Asia/Karachi");
+
+        $requestDate = date("Y/m/d");
+
+        $actualname=basename( $_FILES["fileToUpload"]["name"]);
+        $clientid=$_SESSION['id'];
+        
+                
+        // Check if image file is a actual image or fake image
+        if(isset($_POST["submit"])) {
+
+                $uploadOk = 1;
+           
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            echo "Sorry, file already exists.";
+            $uploadOk = 0;
+        }
+
+        // Allow certain file formats
+        if($imageFileType != "pdf"  ) {
+            echo "Sorry, PDF files are allowed.";
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            echo "Sorry, your file was not uploaded.";
+        // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+                echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+                
+                 //database access
+                $servername = "localhost";
+                $user = "root";
+                $pass = "";
+                $dbname = "datacenter";
+
+                //establishing connection
+                $conn = new mysqli($servername, $user, $pass, $dbname);
+
+                if($conn -> connect_error){
+                    die("Connection Failed: " . $conn->connect_error);
+                }
+                echo "Connection Successful";
+                $sql = "SELECT * FROM users WHERE id='".$_SESSION['id']."'";
+                                                $result = $conn->query($sql);
+                                                
+                                                if(!empty($result)){
+                                                    if($result->num_rows > 0 ){
+                                                        while($row = $result->fetch_assoc()){ 
+                                                        $company=$row["company"];
+                                                                $sql = "INSERT INTO dccost (clientid, date , file , dc , company, costtype, costtitle, costdate, costinfo) VALUES('".$clientid."', '".$requestDate."', '".$actualname."' , '".$DC."' , '".$company."', '".$costtype."', '".$costtitle."', '".$costdate."', '".$costinfo."')";
+                                                                    if($conn->query($sql)===TRUE){
+                                                                         echo "
+                                                                        <script type=\"text/javascript\">
+                                                                        alert(\"Request Generated Successfully\");
+                                                                        </script>
+                                                                    ";
+                                                        
+                                                        }
+                                                    }
+                                                }    
+                
+                header("Location: cost.php");
+                exit();
+                
+                
+                }
+                else {
+                    print_r( "Error: " . $sql . "<br>" . $conn->error); exit();
+                }
+
+                $conn -> close();
+                
+                
+            } else {
+                echo "Sorry, there was an error uploading your file.";
             }
-            echo "Connection Successful";
+        }
 
-            $sql = "INSERT INTO dccost (costtype, costtitle, costdate, costinfo) VALUES ('".$costtype."', '".$costtitle."', '".$costdate."', '".$costinfo."')";
-             if($conn->query($sql)===TRUE){
-                 echo "
-                <script type=\"text/javascript\">
-                alert(\"Cost Added Successfully\");
-                </script>
-            ";
+
             
-            
-            }
-            else {
-                print_r( "Error: " . $sql . "<br>" . $conn->error); exit();
-            }
-
-            $conn -> close();
     }
 
 ?>
@@ -241,12 +316,13 @@
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Request ID:</th>
-                                        <th>Request generated for:</th>
-                                        <th>Request generated on date:</th>
-                                        <th>Request generated on time:</th>
-                                        <th>Status:</th>
-                                        <th>View Report:</th>
+                                        <th>Title:</th>
+                                        <th>Type:</th>
+                                        <th>File Name:</th>
+                                        <th>Generated by:</th>
+                                        <th>Generated on:</th>
+                                        <th>Generated for:</th>
+                                        <th>Additional Info:</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tablebody">
@@ -278,7 +354,7 @@
 										echo $DC;
 										
 										
-                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM customerrequest WHERE requestfor='".$DC."'";
+                                        $sql = "SELECT costtitle, costtype, file, dc, date, costdate, costinfo FROM dccost WHERE dc='".$DC."'";
                                         
 										
 										$result = $conn->query($sql);
@@ -286,12 +362,14 @@
                                         if($result->num_rows > 0){
                                             while($row = $result->fetch_assoc()){ ?>
                                                     <tr>
-                                                        <td><?php echo $row["id"] ?></td>
-                                                        <td><?php echo $row["requestfor"] ?></td>
-                                                        <td><?php echo $row["requestdate"] ?></td>
-                                                        <td><?php echo $row["requesttime"] ?></td>
-                                                        <td><?php echo $row["status"] ?></td>
-                                                        <td><a class="btn btn-default btn-sm" href="dcReportView.php?id=<?php echo $row['id'];?>">View</a></td>
+                                                        <td><?php echo $row["costtitle"] ?></td>
+                                                        <td><?php echo $row["costtype"] ?></td>
+                                                        <td><?php echo $row["file"] ?></td>
+                                                        <td><?php echo $row["dc"] ?></td>
+                                                        <td><?php echo $row["date"] ?></td>
+                                                        <td><?php echo $row["costdate"] ?></td>
+                                                        <td><?php echo $row["costinfo"] ?></td>
+                                                        <td><a class="btn btn-default btn-sm" href="<?php echo "uploadscost/".$row["file"] ?> ">View</a></td>
                                                     </tr>
                                             <?php
                                             }
