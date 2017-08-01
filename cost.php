@@ -38,6 +38,45 @@
 
 <body>
 
+<?php
+    $costtype = $costtitle = $costdate = $costinfo = "";
+    if($_SERVER["REQUEST_METHOD"]== "POST"){
+        $costtype = $_POST["costtype"];
+        $costtitle = $_POST["costtitle"];
+        $costdate = $_POST["costdate"];
+        $costinfo = $_POST["costinfo"];
+
+            $servername = "localhost";
+            $user = "root";
+            $pass = "";
+            $dbname = "datacenter";
+
+            $conn = new mysqli($servername, $user, $pass, $dbname);
+
+            if($conn -> connect_error){
+                die("Connection Failed: " . $conn->connect_error);
+            }
+            echo "Connection Successful";
+
+            $sql = "INSERT INTO dccost (costtype, costtitle, costdate, costinfo) VALUES ('".$costtype."', '".$costtitle."', '".$costdate."', '".$costinfo."')";
+             if($conn->query($sql)===TRUE){
+                 echo "
+                <script type=\"text/javascript\">
+                alert(\"Cost Added Successfully\");
+                </script>
+            ";
+            
+            
+            }
+            else {
+                print_r( "Error: " . $sql . "<br>" . $conn->error); exit();
+            }
+
+            $conn -> close();
+    }
+
+?>
+
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -85,9 +124,10 @@
 					<li>
                         <a href="dcdocuments.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
                     </li>
-                    <li>
+					<li>
                         <a href="cost.php"><i class="fa fa-fw fa-usd"></i> Cost</a>
                     </li>
+				
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -108,104 +148,85 @@
                                 <i class="fa fa-dashboard"></i>  <a href="dcDashboard.php">Dashboard</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-table"></i> Status Report
+                                <i class="fa fa-table"></i> Costs
                             </li>
                         </ol>
                     </div>
                 </div>
                 <!-- /.row -->
 
-				
-					<div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-comments fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div style="font-size:large" >New </br>Requests</div>
-                                       
-                                    </div>
+				<!--Costing-->
+                
+				<div class="row">
+                    <div >
+
+                        <form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
+                        
+                        
+                        
+                        <div class='col-md-12'>
+                          <div class="form-group">
+                                <label>Cost Type:</label>
+                                <select class="form-control" name="costtype">
+                                    <option value="Capex">Capex</option>
+                                    <option value="Opex">Opex</option>
+                                </select>
+                            </div>
+                        </div>
+                            
+                        <div class='col-md-12'>
+                            <div class="form-group">
+                                <label>Cost Title:</label>
+                                <input type="text" class="form-control" name="costtitle" placeholder="Enter cost title"  required>
+                            </div>
+                        </div>
+
+                        <div class='col-md-12'>
+                            <div class="form-group">
+                                <label> Date: </label>
+                                <div class='input-group date' id='datetimepicker6' >
+                                    <input type='date' class="form-control" name="costdate" placeholder="mm/dd/yyyy" required />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                                 </div>
                             </div>
-                            <a href="dcDashboard.php">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-green">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div style="font-size:large" >Maintenance Requests</div>
-                                       
-                                    </div>
-                                </div>
+                        </div>                       
+                            
+                        <div class='col-md-12'>
+                            <div class="form-group">
+                                <label>Additional Details:</label>
+                                <textarea class="form-control" rows="3" name="costinfo"></textarea>
                             </div>
-                            <a href="dcDashboard2.php">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-yellow">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-shopping-cart fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div style="font-size:large"> &nbsp;&nbsp;&nbsp;Pending Requests</div>
-                                       
-                                    </div>
-                                </div>
+
+                        <div class='col-md-6'>
+                            <div class="form-group">
+                                <label>Upload bill:</label>
+                                <input type="file" name="fileToUpload" id="fileToUpload">
                             </div>
-                            <a href="dcDashboard3.php">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-red">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-support fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div style="font-size:large">&nbsp;&nbsp;&nbsp;Accepted Requests</div>
-                                        
-                                    </div>
-                                </div>
+                          
+                          
+                        <div class='col-md-12' style="text-align: center;">
+                                <?PHP
+     
+                                    $a="hello";
+                                     
+                                    ?>
+     
+                            <div class="form-group">
+                            <button type="submit" class="btn btn-default btn-block" name="submit">Submit</button>
+                          
                             </div>
-                            <a href="dcDashboard4.php">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
                         </div>
+
+                           
+
+                        </form>
+
                     </div>
-                </div>
+                   </div>
 				
 				
 				
@@ -215,7 +236,7 @@
 				
                 <div class="row">
                     <div class="col-lg-12">
-                        <h2>Maintenance Requests</h2>
+                        <h2>Data Center Cost Summary</h2>
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
@@ -257,7 +278,7 @@
 										echo $DC;
 										
 										
-                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM corrective WHERE requestfor='".$DC."'";
+                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM customerrequest WHERE requestfor='".$DC."'";
                                         
 										
 										$result = $conn->query($sql);
@@ -270,7 +291,7 @@
                                                         <td><?php echo $row["requestdate"] ?></td>
                                                         <td><?php echo $row["requesttime"] ?></td>
                                                         <td><?php echo $row["status"] ?></td>
-                                                        <td><a class="btn btn-default btn-sm" href="dccorrectiveview.php?id=<?php echo $row['id'];?>">View</a></td>
+                                                        <td><a class="btn btn-default btn-sm" href="dcReportView.php?id=<?php echo $row['id'];?>">View</a></td>
                                                     </tr>
                                             <?php
                                             }
