@@ -88,6 +88,9 @@
 					<li class="active">
                         <a href="documents.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
                     </li>
+                    <li>
+                        <a href="cost.php"><i class="fa fa-fw fa-usd"></i> Cost</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

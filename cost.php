@@ -323,6 +323,7 @@
                                         <th>Generated on:</th>
                                         <th>Generated for:</th>
                                         <th>Additional Info:</th>
+                                        <th>View File:</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tablebody">
