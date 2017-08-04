@@ -184,9 +184,9 @@
 					<li>
                         <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
                     </li>
-					<!-- <li>
-                        <a href="#"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
-                    </li> -->
+					<li>
+                        <a href="documents.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
