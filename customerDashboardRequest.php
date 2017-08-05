@@ -404,12 +404,17 @@
                                 <label>Hardware Installation/Replacement</label>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="hardware" value="Yes" checked>Yes
+                                        <input type="radio" name="hardware" value="Hardware Installation" checked>Hardware Installation
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="hardware" value="No">No
+                                        <input type="radio" name="hardware" value="Hardware Replacement">Hardware Replacement
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="hardware" value="None">None
                                     </label>
                                 </div>
                             </div>
@@ -418,12 +423,17 @@
                                 <label>Servers/Equipment Maintanence Activity</label>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="maintanence" value="Yes" checked>Yes
+                                        <input type="radio" name="maintanence" value="Server Maintanence" checked>Server Maintenance
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="maintanence" value="No">No
+                                        <input type="radio" name="maintanence" value="Equipment Maintanence" checked>Equipment Maintenance
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="maintanence" value="None">None
                                     </label>
                                 </div>
                             </div>
