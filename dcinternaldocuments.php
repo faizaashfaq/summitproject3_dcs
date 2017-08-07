@@ -1,4 +1,3 @@
-
 <?php
     session_start();
     if($_SESSION['user']=="" || $_SESSION['role'] != 1 && $_SESSION['role'] != 2 && $_SESSION['role'] != 3 && $_SESSION['role'] != 4){
@@ -6,6 +5,7 @@
         exit();
     }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,6 +38,121 @@
 </head>
 
 <body>
+
+<?php
+$title = $DC =  "";
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+$title = $_POST['title'];
+if($_SESSION['role'] == 1){
+                                            $DC="Commercial Data Center Lahore";
+                                        }else if ($_SESSION['role'] == 2){  
+                                                $DC="IT Data Center Islamabad";
+                                              }else if($_SESSION['role'] == 3){
+                                                  $DC="Commercial Data Center Karachi";
+                                                    }else if($_SESSION['role'] == 4){
+                                                        $DC="IT Data Center Karachi";
+                                                            }
+
+$target_dir = "uploadsinternal/";
+$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$uploadOk = 1;
+
+$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+
+
+date_default_timezone_set("Asia/Karachi");
+
+$requestDate = date("Y/m/d");
+
+$actualname=basename( $_FILES["fileToUpload"]["name"]);
+
+        
+// Check if image file is a actual image or fake image
+if(isset($_POST["submit"])) {
+
+        $uploadOk = 1;
+   
+}
+// Check if file already exists
+if (file_exists($target_file)) {
+    echo "Sorry, file already exists.";
+    $uploadOk = 0;
+}
+
+// Allow certain file formats
+if($imageFileType != "pdf"  ) {
+    echo "Sorry, PDF files are allowed.";
+    $uploadOk = 0;
+}
+// Check if $uploadOk is set to 0 by an error
+if ($uploadOk == 0) {
+    echo "Sorry, your file was not uploaded.";
+// if everything is ok, try to upload file
+} else {
+    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+        
+         //database access
+        $servername = "localhost";
+        $user = "root";
+        $pass = "";
+        $dbname = "datacenter";
+
+        //establishing connection
+        $conn = new mysqli($servername, $user, $pass, $dbname);
+
+        if($conn -> connect_error){
+            die("Connection Failed: " . $conn->connect_error);
+        }
+        echo "Connection Successful";
+        $sql = "SELECT * FROM users WHERE id='".$_SESSION['id']."'";
+                                        $result = $conn->query($sql);
+                                        
+                                        if(!empty($result)){
+                                            
+                                            if($result->num_rows > 0 ){
+
+                                                while($row = $result->fetch_assoc()){ 
+                                                        $sql = "INSERT INTO internaldocuments (dcid, date , file , title) VALUES('".$DC."', '".$requestDate."', '".$actualname."' , '".$title."')";
+                                                            if($conn->query($sql)===TRUE){
+                                                                 echo "
+                                                                <script type=\"text/javascript\">
+                                                                alert(\"Request Generated Successfully\");
+                                                                </script>
+                                                            ";
+                                                
+                                                }
+                                                else{
+                                                     echo "
+                                                                <script type=\"text/javascript\">
+                                                                alert(\"Failed\");
+                                                                </script>
+                                                            ";
+                                                }
+                                            }
+                                        }    
+        
+        
+        // header("Location: dcinternaldocuments.php");
+        // exit();
+        
+        }
+        else {
+            print_r( "Error: " . $sql . "<br>" . $conn->error); exit();
+        }
+
+        $conn -> close();
+        
+        
+    } else {
+        echo "Sorry, there was an error uploading your file.";
+    }
+}
+}
+?>
+
+
+
 
     <div id="wrapper">
 
@@ -77,22 +192,22 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li class="active">
+                      <li >
                         <a href="dcDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
-                    </li>
-					 <li>
+                    </li >
+                    
+                    <li>
                         <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
                     </li>
-					<li>
+                    <li>
                         <a href="dcdocuments.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
                     </li>
-                    <li>
+                    <li  class="active">
                         <a href="dcinternaldocuments.php"><i class="fa fa-fw fa-newspaper-o"></i> Internal Documents</a>
                     </li>
-					<li>
+                    <li>
                         <a href="cost.php"><i class="fa fa-fw fa-usd"></i> Cost</a>
                     </li>
-				
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -103,7 +218,7 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <div class="row">
+             <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
                             Dashboard
@@ -120,117 +235,41 @@
                 </div>
                 <!-- /.row -->
 
+				<div class="row">
 				
-					<div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-comments fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div style="font-size:large" >New </br>Requests</div>
-                                       
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="dcDashboard.php">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-green">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div style="font-size:large" >Maintenance Requests</div>
-                                       
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="dcDashboard2.php">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-yellow">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-shopping-cart fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div style="font-size:large"> &nbsp;&nbsp;&nbsp;Pending Requests</div>
-                                       
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="dcDashboard3.php">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-red">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-support fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div style="font-size:large">&nbsp;&nbsp;&nbsp;Accepted Requests</div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="dcDashboard4.php">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-				
-				
-				
-				
-				
-				
-				
+						<div class="col-lg-12">
+						
+						<form class="form-inline" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="multipart/form-data">
+								  <div class="form-group" >
+									<input type="text" class="form-control" name="title" id="filename" placeholder="Enter File Name" required>
+								  </div>
+								  
+								  <div class="form-group">
+									<input type="file" name="fileToUpload" id="fileToUpload">
+								  </div>
+								
+								  <input type="submit" value="Upload File" name="submit">
+						</form>
+						
+											
+						</div>
+				</div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <h2>Data Center Visit Requests</h2>
+                        <h2>Documents</h2>
+					
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped">
+                            <table class="table table-bordered table-hover table-striped" id="requests">
                                 <thead>
                                     <tr>
-                                        <th>Request ID:</th>
-                                        <th>Request generated for:</th>
-                                        <th>Request generated on date:</th>
-                                        <th>Request generated on time:</th>
-                                        <th>Status:</th>
-                                        <th>View Report:</th>
+                                        <th>ID</th>
+                                        <th>Data Center</th>
+                                        <th>Submission Date</th>
+                                        <th>File</th>
+                                        <th>Title</th>
+										<th>comments</th>
+                                        <th>View</th>
+										<th>Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tablebody">
@@ -249,37 +288,29 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                         echo("Connection Successful");
+										 echo $_SESSION['id'] ;
+                                        $sql = "SELECT * FROM internaldocuments";
+                                        $result = $conn->query($sql);
 										
-										if($_SESSION['role'] == 1){
-											$DC="Commercial Data Center Lahore";
-										}else if ($_SESSION['role'] == 2){	
-												$DC="IT Data Center Islamabad";
-											  }else if($_SESSION['role'] == 3){
-												  $DC="Commercial Data Center Karachi";
-													}else if($_SESSION['role'] == 4){
-														$DC="IT Data Center Karachi";
-															}
-										echo $DC;
-										
-										
-                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM customerrequest WHERE requestfor='".$DC."'";
-                                        
-										
-										$result = $conn->query($sql);
-
-                                        if($result->num_rows > 0){
-                                            while($row = $result->fetch_assoc()){ ?>
-                                                    <tr>
-                                                        <td><?php echo $row["id"] ?></td>
-                                                        <td><?php echo $row["requestfor"] ?></td>
-                                                        <td><?php echo $row["requestdate"] ?></td>
-                                                        <td><?php echo $row["requesttime"] ?></td>
-                                                        <td><?php echo $row["status"] ?></td>
-                                                        <td><a class="btn btn-default btn-sm" href="dcReportView.php?id=<?php echo $row['id'];?>">View</a></td>
-                                                    </tr>
-                                            <?php
-                                            }
-                                        }
+										if(!empty($result)){
+											if($result->num_rows > 0 ){
+												while($row = $result->fetch_assoc()){ ?>
+														<tr>
+															<td><?php echo $row["id"] ?></td>
+                                                            <td><?php echo $row["dcid"] ?></td>
+                                                            <td><?php echo $row["date"] ?></td>
+                                                            <td><?php echo $row["file"] ?></td>
+                                                            <td><?php echo $row["title"] ?></td>
+															<td><?php echo $row["comments"] ?></td>
+                                                           
+                                                            <td><a class="btn btn-default btn-sm" href="<?php echo "uploads/".$row["file"] ?> ">View</a></td>
+															<td><a href="javascript:removeRow(' <?php echo $row["id"] ?> ', '<?php echo $row["file"] ?>  ');" class="btn btn-default btn-sm">Delete</a></td>
+                                                    
+														</tr>
+												<?php
+												}
+											}
+										}
                                     ?>
                                 </tbody>
                             </table>
@@ -305,6 +336,23 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+	
+
+
+	
+	<script>
+	
+	// Remove row
+			function removeRow(id,file) {
+			
+				$.post('deletedoc.php',{postid:id, filename:file}, function(data){
+					
+					$( "#requests" ).load( "documents.php #requests" );
+				});
+			
+			}
+		</script>
+	
 	
 		<script>
 		
