@@ -63,7 +63,7 @@
 
 <?php
 
-    $name = $nic = $company = $timein = $timeout = $workdetails = $equipments = $workedon = $requestDate = $requestTime = $requestfor = "";
+    $name = $nic = $company = $timein = $timeout = $workdetails = $equipments = $workedon = $requestDate = $requestTime = $requestfor = $hardware = $hardw  ="";
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $name = $_POST["name"];
@@ -84,7 +84,27 @@
 		$enviornment = $_POST["enviornment"];
 		$remarks = $_POST["remarks"];
 		$clientid=$_SESSION['id'];
-        $status = "Awaiting approval from KAM";
+        $status = "Awaiting approval from KAM";   
+        $hardw  = $_POST["hardw"];
+        $maintain = $_POST["maintain"];
+
+        if($hardware == "Yes"){
+            $hardw = implode(" ", $hardw);
+        }
+        else{
+            $hardw = array();
+            array_push($hardw, "No");
+            $hardw = implode(" ", $hardw);
+        }
+
+        if($maintanence == "Yes"){
+            $maintain = implode(" ", $maintain);
+        }
+        else{
+            $maintain = array();
+            array_push($maintain, "No");
+            $maintain = implode(" ", $maintain);
+        }
 
         date_default_timezone_set("Asia/Karachi");
         $requestDate = date("Y/m/d");
@@ -104,7 +124,7 @@
         }
         echo "Connection Successful";
 
-        $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM, clientid , permission , enviornment , remarks) VALUES('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."',  '".$clientid."', '".$permission."', '".$enviornment."', '".$remarks."')";
+        $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM, clientid , permission , enviornment , remarks) VALUES('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardw."', '".$maintain."', '".$status."', '".$kam."',  '".$clientid."', '".$permission."', '".$enviornment."', '".$remarks."')";
         if($conn->query($sql)===TRUE){
             echo "New Row added Successfully";
 			                 
@@ -404,17 +424,19 @@
                                 <label>Hardware Installation/Replacement</label>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="hardware" value="Hardware Installation" checked>Hardware Installation
+                                        <input type="radio" name="hardware" value="Yes" checked>Yes
                                     </label>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" checked="checked" name="hardw[]" value="Hardware Installation">Hardware Installation</label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" name="hardw[]" value="Hardware Replacement">Hardware Replacement</label>
+                                    </div>
                                 </div>
+                                ----------------------------------------------------------------------------------------------
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="hardware" value="Hardware Replacement">Hardware Replacement
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="hardware" value="None">None
+                                        <input type="radio" name="hardware" value="No">No
                                     </label>
                                 </div>
                             </div>
@@ -423,17 +445,19 @@
                                 <label>Servers/Equipment Maintanence Activity</label>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="maintanence" value="Server Maintanence" checked>Server Maintenance
+                                        <input type="radio" name="maintanence" value="Yes" checked>Yes
                                     </label>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" checked="checked" name="maintain[]" value="Server Maintanence">Server Maintanence</label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" name="maintain[]" value="Equipment Maintanence">Equipment Maintanence</label>
+                                    </div>
                                 </div>
+                                -----------------------------------------------------------------------------------------------
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="maintanence" value="Equipment Maintanence" checked>Equipment Maintenance
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="maintanence" value="None">None
+                                        <input type="radio" name="maintanence" value="No">No
                                     </label>
                                 </div>
                             </div>
