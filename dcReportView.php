@@ -52,7 +52,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">PTCL Data Center</a>
+                <img src="img/ptcl.png" class="img-responsive navbar-brand" >
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -125,27 +125,7 @@
                             <table class="table table-bordered table-hover table-striped" id="requests">
                                 <thead>
                                     <tr>
-                                        <th>Request ID:</th>
-                                        <th>Client ID:</th>
-                                        <th>Request generated for:</th>
-                                        <th>Request generated on date:</th>
-                                        <th>Request generated on time:</th>
-                                        <th>Name:</th>
-                                        <th>NIC:</th>
-                                        <th>Company:</th>
-                                        <th>Time in:</th>
-                                        <th>Time out:</th>
-                                        <th>Work Details:</th>
-                                        <th>Equipments Accompanied:</th>
-                                        <th>Servers/Equipments/ACs unit to be worked upon:</th>
-                                        <th>Server shutdown required:</th>
-                                        <th>Software Installation:</th>
-                                        <th>Hardware Installation:</th>
-                                        <th>Servers/Equipments Maintanence activity:</th>
-                                        <th>Status:</th>
-										<th>Reason:</th>
-                                        <th>Approve:</th>
-                                        <th>Reject:</th>
+                                      
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -170,26 +150,103 @@
                                             while($row = $result->fetch_assoc()){
                                              ?>
                                                     <tr>
+													    <th>Request ID:</th>
+                                       
                                                         <td><?php echo $row["id"] ?></td>
+														</tr>
+														<tr>
+														 <th>Client ID:</th>
+                                       
                                                         <td><?php echo $row["clientid"] ?></td>
+														</tr>
+														<tr>
+														 <th>Request generated for:</th>
+                                     
                                                         <td><?php echo $row["requestfor"] ?></td>
+														</tr>
+														<tr>
+														   <th>Request generated on date:</th>
+                                      
                                                         <td><?php echo $row["requestdate"] ?></td>
+														</tr>
+														<tr>
+														  <th>Request generated on time:</th>
+                                      
                                                         <td><?php echo $row["requesttime"] ?></td>
+														</tr>
+														<tr>
+														  <th>Name:</th>
+                                       
+                                     
                                                         <td><?php echo $row["name"] ?></td>
+														</tr>
+														<tr>
+														 <th>NIC:</th>
                                                         <td><?php echo $row["nic"] ?></td>
+														</tr>
+														<tr>
+														   <th>Company:</th>
+                                      
                                                         <td><?php echo $row["company"] ?></td>
+														</tr>
+														<tr>
+														  <th>Time in:</th>
+                                       
                                                         <td><?php echo $row["timein"] ?></td>
+														</tr>
+														<tr>
+														 <th>Time out:</th>
+                                     
                                                         <td><?php echo $row["timeout"] ?></td>
+														</tr>
+														<tr>
+														   <th>Work Details:</th>
+                                       
                                                         <td><?php echo $row["workdetails"] ?></td>
+														</tr>
+														<tr>
+														 <th>Equipments Accompanied:</th>
+                                      
                                                         <td><?php echo $row["equipments"] ?></td>
+														</tr>
+														<tr>
+														  <th>Servers/Equipments/ACs unit to be worked upon:</th>
+                                   
                                                         <td><?php echo $row["workedon"] ?></td>
+														</tr>
+														<tr>
+														     <th>Server shutdown required:</th>
+                                      
                                                         <td><?php echo $row["shutdown"] ?></td>
+														</tr>
+														<tr>
+														  <th>Software Installation:</th>
+                                      
                                                         <td><?php echo $row["software"] ?></td>
+														</tr>
+														<tr>
+														  <th>Hardware Installation:</th>
+                                       
                                                         <td><?php echo $row["hardware"] ?></td>
+														</tr>
+														<tr>
+														 <th>Servers/Equipments Maintanence activity:</th>
+                                       
                                                         <td><?php echo $row["maintanence"] ?></td>
+														</tr>
+														<tr>
+														 <th>Status:</th>
+									
                                                         <td><?php echo $row["status"] ?></td>
+														</tr>
+														<tr>
+															<th>Reason:</th>
+                                      
 														<td><?php echo $row["reason"] ?></td>
-														
+														</tr>
+														<tr>
+														  <th>Approve:</th>
+                                        
 														<td><?php
                                                         if ($row["status"] == "Awaiting approval from DC") {
                                                             echo "<button type='submit' name='approve' class='btn btn-default btn-sm' onclick=\"acceptd($ID)\" >Approve</button>";
@@ -198,6 +255,9 @@
                                                             echo "<button type='submit' class='btn btn-default btn-sm' disabled>Approve</button>";
                                                         ?>
                                                         </td>
+														</tr>
+														<tr>
+														<th>Reject:</th>
                                                         <td><?php
                                                         if ($row["status"] == "Awaiting approval from DC") {
                                                             echo "<button type='submit' name='reject' class='btn btn-default btn-sm' onclick=\"rejectd($ID)\" >Reject</button>";

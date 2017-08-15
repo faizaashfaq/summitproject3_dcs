@@ -1,7 +1,11 @@
 <?php
+session_start();
+$clientid=$_SESSION['id'];
+
 $target_dir = "uploads/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$target_file = $target_dir . $clientid."_".basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
+//$target_file=$clientid."_".$target_file;
 
 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 
@@ -12,10 +16,15 @@ date_default_timezone_set("Asia/Karachi");
 $requestDate = date("Y/m/d");
 
 $actualname=basename( $_FILES["fileToUpload"]["name"]);
-session_start();
-$clientid=$_SESSION['id'];
+
 $DC=$_POST["requestfor"];
 		
+	
+	$actualname=$clientid."_".$actualname;
+	
+	
+	echo $actualname;
+	echo $target_file;
 // Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
 

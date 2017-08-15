@@ -58,7 +58,7 @@
                                                             }
 
         $target_dir = "uploadscost/";
-        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+        $target_file = $target_dir .$_SESSION['role']."_". basename($_FILES["fileToUpload"]["name"]);
         $uploadOk = 1;
 
         $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
@@ -71,7 +71,7 @@
 
         $actualname=basename( $_FILES["fileToUpload"]["name"]);
         $clientid=$_SESSION['id'];
-        
+        $actualname=$_SESSION['role']."_".$actualname;
                 
         // Check if image file is a actual image or fake image
         if(isset($_POST["submit"])) {
@@ -165,7 +165,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">PTCL Data Center</a>
+                <img src="img/ptcl.png" class="img-responsive navbar-brand" >
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">

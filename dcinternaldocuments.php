@@ -54,7 +54,7 @@ if($_SESSION['role'] == 1){
                                                             }
 
 $target_dir = "uploadsinternal/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$target_file = $target_dir. $_SESSION['role']."_".basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 
 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
@@ -65,7 +65,7 @@ date_default_timezone_set("Asia/Karachi");
 $requestDate = date("Y/m/d");
 
 $actualname=basename( $_FILES["fileToUpload"]["name"]);
-
+$actualname=$_SESSION['role']."_".$actualname;
         
 // Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
