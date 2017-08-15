@@ -80,7 +80,11 @@
                     <li class="active">
                         <a href="corporateDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li>
+                    <li>
+                        <a href="KAMaddcustomer.php"><i class="fa fa-fw fa-table"></i> Add a new customer</a>
+                    </li>
                 </ul>
+
             </div>
             <!-- /.navbar-collapse -->
         </nav>
