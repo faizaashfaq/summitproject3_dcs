@@ -60,79 +60,6 @@
 
 
 
-<?php
-
-    $email = $pass = $company = $name = $cname =  "";
-
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $email = $_POST["email"];
-        $pass = $_POST["pass"];
-        $company = $_POST["company"];
-        $id = $_SESSION['id'];
-        $cname = $_POST['cname'];
-        $role = 0;
-		
-
-        //database access
-        $servername = "localhost";
-        $user = "root";
-        $pass = "";
-        $dbname = "datacenter";
-
-        //establishing connection
-        $conn = new mysqli($servername, $user, $pass, $dbname);
-
-        if($conn -> connect_error){
-            die("Connection Failed: " . $conn->connect_error);
-        }
-        echo "Connection Successful";
-
-        $sql = "SELECT Name FROM users where id = '".$id."'";
-        $result = $conn->query($sql);
-
-        if($result->num_rows > 0){
-            while ($row = $result -> fetch_assoc()) {
-            	$name = $row["Name"];
-            }
-
-
-		$sql2 = "INSERT INTO users (email, pwd, role, Name, company, addedby) VALUES ('".$email."', '".$pass."', '".$role."', '".$cname."', '".$company."', '".$name."')";
-		if($conn->query($sql2) == TRUE){
-
-			echo "New row added";
-
-            //Mail function
-            
-            //End Mail
-            header("Location: KAMaddcustomer.php"); //to the customer dashboard
-	    	exit();
-             echo "
-            <script type=\"text/javascript\">
-            alert(\"Request Generated Successfully\");
-            </script>
-        ";
-		
-		
-        }
-        else {
-            print_r( "Error: " . $sql . "<br>" . $conn->error); exit();
-        }
-
-        $conn -> close();
-    }
-}
-
-?>
-
-
-
-
-
-
-
-
-
-
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -174,10 +101,10 @@
                     <li >
                         <a href="corporateDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li >
-                    <li class="active">
+                    <li>
                         <a href="KAMaddcustomer.php"><i class="fa fa-fw fa-plus"></i> Add a new customer</a>
                     </li>
-                    <li>
+                    <li  class="active">
                         <a href="KAMviewcustomer.php"><i class="fa fa-fw fa-list"></i> Customer's list</a>
                     </li>
                 </ul>
@@ -193,14 +120,14 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Add a new customer
+                            Customer's List
                         </h1>
                         <ol class="breadcrumb">
                             <li>
                                 <i class="fa fa-dashboard"></i>  <a href="corporateDashboard.php">Dashboard</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-edit"></i> Add a new customer
+                                <i class="fa fa-list"></i> Customer's list
                             </li>
                         </ol>
                     </div>
@@ -219,82 +146,61 @@
 
 
 		  <div class="row">
-                    <div >
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped" id="requests">
+                                <thead>
+                                    <tr>
+                                        <th>Customer ID:</th>
+                                        <th>Customer email:</th>
+                                        <th>Customer Name:</th>
+                                        <th>Company:</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablebody">
+                                    <?php
+                                        $Name = $_SESSION["user"];
+                                        //database access
+                                        $servername = "localhost";
+                                        $user = "root";
+                                        $pass = "";
+                                        $dbname = "datacenter";
 
-                        <form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-						
-						<div class='col-md-12'>
-	
-								<div class="form-group">
-                                <label>Customer Name: </label>
-                                <input class="form-control" name="cname" id='cname' required>
-								</div>
-							</div>
+                                        //establishing connection
+                                        $conn = new mysqli($servername, $user, $pass, $dbname);
 
-						<div class='col-md-12'>
-	
-								<div class="form-group">
-                                <label>Email ID: </label>
-                                <input class="form-control" name="email" id='email' required>
-								</div>
-							</div>
+                                        if($conn -> connect_error){
+                                            die("Connection Failed: ". $conn->connect_error);
+                                        }
+                                        echo("Connection Successful");
+                                        echo($_SESSION['user']);
+                                        $sql = "SELECT id, email, Name, company FROM users WHERE addedby = '".$Name."'";
+                                        $result = $conn->query($sql);
 
-							<div class='col-md-12'>
-                            <div class="form-group">
-                                <label>Password: </label>
-                                <input type="Password" class="form-control" name="pass" id='pass' placeholder="Enter a password to share with the customer" required>
-                            </div>
-							
-							</div>	
-
-					
-							
-							
-						<div class='col-md-12'>
-     
-							   <div class="form-group">
-                                <label>Company</label>
-                                <input class="form-control" name="company" required>
-                            </div>
-						</div>
-                          
-						  
-						  	<div class='col-md-12' style="text-align: center;">
-								<?PHP
-	 
-									$a="hello";
-									 
-									?>
-     
-							<div class="form-group">
-                            <button type="submit" class="btn btn-default" >Submit</button>
-                          
-                            </div>
-						</div>
-
-                           
-
-                        </form>
-
+                                        if($result->num_rows > 0){
+                                            while($row = $result->fetch_assoc()){ ?>
+                                                    <tr>
+                                                        <td><?php echo $row["id"] ?></td>
+                                                        <td><?php echo $row["email"] ?></td>
+                                                        <td><?php echo $row["Name"] ?></td>
+                                                        <td><?php echo $row["company"] ?></td>
+                                                    </tr>
+                                            <?php
+                                            }
+                                        }
+                                            ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                         <div class="col-md-12 text-center">
+                      <ul class="pagination pagination-lg pager" id="myPager"></ul>
+                      </div>
+      
+      
                     </div>
-                   
-                
-		 
-		 
-		 
-		 
-		 
-		 
-
-                
-				
-				
-            
-               
-
-           
-
-        </div>
+                </div>
+                <!-- /.row -->
         <!-- /#page-wrapper -->
 
     </div>

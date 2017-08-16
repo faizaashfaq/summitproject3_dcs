@@ -81,7 +81,10 @@
                         <a href="corporateDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="KAMaddcustomer.php"><i class="fa fa-fw fa-table"></i> Add a new customer</a>
+                        <a href="KAMaddcustomer.php"><i class="fa fa-fw fa-plus"></i> Add a new customer</a>
+                    </li>
+                    <li>
+                        <a href="KAMviewcustomer.php"><i class="fa fa-fw fa-list"></i> Customer's list</a>
                     </li>
                 </ul>
 
