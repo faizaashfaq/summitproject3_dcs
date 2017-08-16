@@ -52,7 +52,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">PTCL Data Center</a>
+               <img src="img/ptcl.png" class="img-responsive navbar-brand" >
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -82,7 +82,8 @@
                         <a href="dcDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li>
                    <li>
-                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
+				  
+                        <a href="img/<?php echo  $_SESSION['role']?>.jpg"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
                     </li>
 					<li>
                         <a href="dcdocuments.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>

@@ -1,3 +1,4 @@
+
 <?php
     session_start();
     if($_SESSION['user']=="" || $_SESSION['role'] != 0){
@@ -105,12 +106,18 @@
 
         $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM, clientid , permission , enviornment , remarks) VALUES('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."',  '".$clientid."', '".$permission."', '".$enviornment."', '".$remarks."')";
         if($conn->query($sql)===TRUE){
+            echo "New Row added Successfully";
+			                 
+            //Mail function
+            
+            //End Mail
+            header("Location: customerDashboard.php"); //to the customer dashboard
+	    	exit();
              echo "
             <script type=\"text/javascript\">
             alert(\"Request Generated Successfully\");
             </script>
         ";
-		
 		
 		
         }
@@ -144,12 +151,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">PTCL Data Center</a>
+             <img src="img/ptcl.png" class="img-responsive navbar-brand" >
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Customer Name <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['user']?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -174,10 +181,13 @@
                         <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li >
                     <li class="active">
-                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> New Request</a>
+                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Routine Activity Form</a>
                     </li>
 						 <li >
                         <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Maintanence Form</a>
+                    </li>
+					<li >
+                        <a href="server.php"><i class="fa fa-fw fa-location-arrow"></i> Server Placement Form</a>
                     </li>
 					<li>
                         <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
@@ -315,7 +325,7 @@
 							<div class='col-md-12'>
                             <div class="form-group">
                                 <label>CNIC</label>
-                                <input type="text" pattern=".{13,13}" class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                <input type="text" maxlength="13" pattern=".{13,13}" class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                                <p class="help-block">In case of more than one CNICs, kindly use commas.</p>
                             </div>
 							
@@ -397,12 +407,17 @@
                                 <label>Hardware Installation/Replacement</label>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="hardware" value="Yes" checked>Yes
+                                        <input type="radio" name="hardware" value="Hardware Installation" checked>Hardware Installation
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="hardware" value="No">No
+                                        <input type="radio" name="hardware" value="Hardware Replacement">Hardware Replacement
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="hardware" value="None">None
                                     </label>
                                 </div>
                             </div>
@@ -411,12 +426,17 @@
                                 <label>Servers/Equipment Maintanence Activity</label>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="maintanence" value="Yes" checked>Yes
+                                        <input type="radio" name="maintanence" value="Server Maintanence" checked>Server Maintenance
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="maintanence" value="No">No
+                                        <input type="radio" name="maintanence" value="Equipment Maintanence" checked>Equipment Maintenance
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="maintanence" value="None">None
                                     </label>
                                 </div>
                             </div>

@@ -145,12 +145,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">PTCL Data Center</a>
+               <img src="img/ptcl.png" class="img-responsive navbar-brand" >
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Customer Name <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['user']?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -175,7 +175,7 @@
                         <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li >
                     <li >
-                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> New Request</a>
+                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Routine Activity Form</a>
                     </li>
 					 <li class="active">
                         <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Corrective Form</a>
@@ -185,7 +185,7 @@
                         <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
                     </li>
 					<li>
-                        <a href="#"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                        <a href="documents.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
                     </li>
                 </ul>
             </div>
@@ -288,7 +288,7 @@
 							<div class='col-md-12'>
                             <div class="form-group">
                                 <label>CNIC</label>
-                                <input type="text" pattern=".{13,13}"   class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                <input type="text" maxlength="13" pattern=".{13,13}"   class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                                <p class="help-block">In case of more than one CNICs, kindly use commas.</p>
                             </div>
 							
