@@ -186,6 +186,9 @@
 						 <li >
                         <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Maintanence Form</a>
                     </li>
+                    <li >
+                        <a href="placementform.php"><i class="fa fa-fw fa-location-arrow"></i> Placement Form</a>
+                    </li>
 					<li>
                         <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
                     </li>

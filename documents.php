@@ -86,6 +86,9 @@
 						 <li >
                         <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Maintenance Form</a>
                     </li>
+                    <li >
+                        <a href="placementform.php"><i class="fa fa-fw fa-location-arrow"></i> Placement Form</a>
+                    </li>
 					<li>
                         <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
                     </li>
@@ -112,7 +115,7 @@
                                 <i class="fa fa-dashboard"></i>  <a href="dcDashboard.php">Dashboard</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-table"></i> Status Report
+                                <i class="fa fa-table"></i> Documents
                             </li>
                         </ol>
                     </div>
