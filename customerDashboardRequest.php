@@ -186,13 +186,10 @@
 						 <li >
                         <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Maintanence Form</a>
                     </li>
-<<<<<<< HEAD
                     <li >
                         <a href="placementform.php"><i class="fa fa-fw fa-location-arrow"></i> Placement Form</a>
-=======
 					<li >
                         <a href="server.php"><i class="fa fa-fw fa-location-arrow"></i> Server Placement Form</a>
->>>>>>> a12f2453749e6f66248604ea3ecf85b5021ae378
                     </li>
 					<li>
                         <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
@@ -413,26 +410,20 @@
                                 <div class="radio">
                                     <label>
                                         <input type="radio" name="hardware" value="Hardware Installation" checked>Hardware Installation
-<<<<<<< HEAD
-=======
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
                                         <input type="radio" name="hardware" value="Hardware Replacement">Hardware Replacement
->>>>>>> a12f2453749e6f66248604ea3ecf85b5021ae378
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-<<<<<<< HEAD
                                         <input type="radio" name="hardware" value="Hardware Replacement">Hardware Replacement
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-=======
->>>>>>> a12f2453749e6f66248604ea3ecf85b5021ae378
                                         <input type="radio" name="hardware" value="None">None
                                     </label>
                                 </div>
