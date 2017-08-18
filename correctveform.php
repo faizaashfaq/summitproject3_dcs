@@ -290,7 +290,7 @@
 							<div class='col-md-12'>
                             <div class="form-group">
                                 <label>CNIC</label>
-                                <input type="text" pattern=".{13,13}"   class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                <input type="text" maxlength="13" pattern=".{13,13}"   class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                                <p class="help-block">In case of more than one CNICs, kindly use commas.</p>
                             </div>
 							

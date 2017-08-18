@@ -166,7 +166,11 @@ if ($uploadOk == 0) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+<<<<<<< HEAD
                 <a class="navbar-brand" href="index.php">PTCL Data Center</a>
+=======
+               <img src="img/ptcl.png" class="img-responsive navbar-brand" >
+>>>>>>> a12f2453749e6f66248604ea3ecf85b5021ae378
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -197,7 +201,11 @@ if ($uploadOk == 0) {
                     </li >
                     
                     <li>
+<<<<<<< HEAD
                         <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
+=======
+                        <a href="img/<?php echo  $_SESSION['role']?>.jpg"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
+>>>>>>> a12f2453749e6f66248604ea3ecf85b5021ae378
                     </li>
                     <li>
                         <a href="dcdocuments.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>

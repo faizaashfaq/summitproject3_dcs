@@ -81,9 +81,12 @@
                         <a href="corporateDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li>
                     <li>
+<<<<<<< HEAD
                         <a href="corporateDashboard2.php"><i class="fa fa-fw fa-table"></i> Placement Requests</a>
                     </li>
                     <li>
+=======
+>>>>>>> a12f2453749e6f66248604ea3ecf85b5021ae378
                         <a href="KAMaddcustomer.php"><i class="fa fa-fw fa-plus"></i> Add a new customer</a>
                     </li>
                     <li>
