@@ -228,7 +228,31 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i>
+                                                                              <?php
+                                        //database access
+                                        $servername = "localhost";
+                                        $user = "root";
+                                        $pass = "";
+                                        $dbname = "datacenter";
+
+                                        //establishing connection
+                                        $conn = new mysqli($servername, $user, $pass, $dbname);
+
+                                        if($conn -> connect_error){
+                                            die("Connection Failed: ". $conn->connect_error);
+                                        }
+                                      
+                                        $sql = "SELECT count(*) as count FROM placement WHERE clientid=".$_SESSION['id'];
+                                        $result = $conn->query($sql);
+
+                                        if($result->num_rows > 0){
+                                            while($row = $result->fetch_assoc()){ ?>
+											 <h1 ><?php echo $row["count"] ?></h1>
+                                             
+                                            <?php
+                                            }
+                                        }
+											?>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div style="font-size:large" >Placement Requests</div>
@@ -264,7 +288,7 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                       
-                                        $sql = "SELECT(SELECT count(*) FROM customerrequest WHERE clientid=".$_SESSION['id']." AND status!='Accepted')+(SELECT count(*)  FROM corrective WHERE clientid=".$_SESSION['id']." AND status!='Accepted') as count";
+                                        $sql = "SELECT(SELECT count(*) FROM customerrequest WHERE clientid=".$_SESSION['id']." AND status!='Accepted')+(SELECT count(*)  FROM corrective WHERE clientid=".$_SESSION['id']." AND status!='Accepted')+(SELECT count(*)  FROM placement WHERE clientid=".$_SESSION['id']." AND status!='Accepted') as count";
                                         $result = $conn->query($sql);
 
                                         if($result->num_rows > 0){
@@ -310,7 +334,7 @@
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
                                       
-                                        $sql = "SELECT(SELECT count(*) FROM customerrequest WHERE clientid=".$_SESSION['id']." AND status='Accepted')+(SELECT count(*)  FROM corrective WHERE clientid=".$_SESSION['id']." AND status='Accepted') as count";
+                                        $sql = "SELECT(SELECT count(*) FROM customerrequest WHERE clientid=".$_SESSION['id']." AND status='Accepted')+(SELECT count(*)  FROM corrective WHERE clientid=".$_SESSION['id']." AND status='Accepted')+(SELECT count(*)  FROM placement WHERE clientid=".$_SESSION['id']." AND status='Accepted') as count";
                                         $result = $conn->query($sql);
 
                                         if($result->num_rows > 0){

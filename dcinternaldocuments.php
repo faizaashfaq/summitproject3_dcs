@@ -52,24 +52,17 @@ if($_SESSION['role'] == 1){
                                                     }else if($_SESSION['role'] == 4){
                                                         $DC="IT Data Center Karachi";
                                                             }
-
 $target_dir = "uploadsinternal/";
 $target_file = $target_dir. $_SESSION['role']."_".basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
-
 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-
-
 date_default_timezone_set("Asia/Karachi");
-
 $requestDate = date("Y/m/d");
-
 $actualname=basename( $_FILES["fileToUpload"]["name"]);
 $actualname=$_SESSION['role']."_".$actualname;
         
 // Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
-
         $uploadOk = 1;
    
 }
@@ -78,7 +71,6 @@ if (file_exists($target_file)) {
     echo "Sorry, file already exists.";
     $uploadOk = 0;
 }
-
 // Allow certain file formats
 if($imageFileType != "pdf"  ) {
     echo "Sorry, PDF files are allowed.";
@@ -97,10 +89,8 @@ if ($uploadOk == 0) {
         $user = "root";
         $pass = "";
         $dbname = "datacenter";
-
         //establishing connection
         $conn = new mysqli($servername, $user, $pass, $dbname);
-
         if($conn -> connect_error){
             die("Connection Failed: " . $conn->connect_error);
         }
@@ -111,7 +101,6 @@ if ($uploadOk == 0) {
                                         if(!empty($result)){
                                             
                                             if($result->num_rows > 0 ){
-
                                                 while($row = $result->fetch_assoc()){ 
                                                         $sql = "INSERT INTO internaldocuments (dcid, date , file , title) VALUES('".$DC."', '".$requestDate."', '".$actualname."' , '".$title."')";
                                                             if($conn->query($sql)===TRUE){
@@ -140,7 +129,6 @@ if ($uploadOk == 0) {
         else {
             print_r( "Error: " . $sql . "<br>" . $conn->error); exit();
         }
-
         $conn -> close();
         
         
@@ -166,7 +154,6 @@ if ($uploadOk == 0) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">PTCL Data Center</a>
                <img src="img/ptcl.png" class="img-responsive navbar-brand" >
             </div>
             <!-- Top Menu Items -->
@@ -198,7 +185,6 @@ if ($uploadOk == 0) {
                     </li >
                     
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
                         <a href="img/<?php echo  $_SESSION['role']?>.jpg"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
                     </li>
                     <li>
@@ -276,16 +262,13 @@ if ($uploadOk == 0) {
                                 </thead>
                                 <tbody id="tablebody">
                                     <?php
-
                                         //database access
                                         $servername = "localhost";
                                         $user = "root";
                                         $pass = "";
                                         $dbname = "datacenter";
-
                                         //establishing connection
                                         $conn = new mysqli($servername, $user, $pass, $dbname);
-
                                         if($conn -> connect_error){
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
@@ -382,7 +365,6 @@ if ($uploadOk == 0) {
     
     var numItems = children.size();
     var numPages = Math.ceil(numItems/perPage);
-
     pager.data("curr",0);
     
     if (settings.showPrevNext){
@@ -459,7 +441,6 @@ if ($uploadOk == 0) {
     
     }
 };
-
 $(document).ready(function(){
     
   $('#tablebody').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:7});

@@ -314,7 +314,7 @@
 						
 					});
 				}
-				$( "#requests" ).load( "corporateReportView.php #requests" );
+				$( "#requests" ).load( "dcReportView.php #requests" );
 			}
 		</script>
 		
@@ -334,7 +334,7 @@
 					});
 					}
 				
-				$( "#requests" ).load( "corporateReportView.php #requests" );
+				$( "#requests" ).load( "dcReportView.php #requests" );
 			
 			}
 		</script>

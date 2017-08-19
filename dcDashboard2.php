@@ -247,7 +247,46 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i>
+                                       <?php
+
+                                        //database access
+                                        $servername = "localhost";
+                                        $user = "root";
+                                        $pass = "";
+                                        $dbname = "datacenter";
+
+                                        //establishing connection
+                                        $conn = new mysqli($servername, $user, $pass, $dbname);
+
+                                        if($conn -> connect_error){
+                                            die("Connection Failed: ". $conn->connect_error);
+                                        }
+                                        
+										
+										if($_SESSION['role'] == 1){
+											$DC="Commercial Data Center Lahore";
+										}else if ($_SESSION['role'] == 2){	
+												$DC="IT Data Center Islamabad";
+											  }else if($_SESSION['role'] == 3){
+												  $DC="Commercial Data Center Karachi";
+													}else if($_SESSION['role'] == 4){
+														$DC="IT Data Center Karachi";
+															}
+										
+										
+										
+                                        $sql = "SELECT count(*) as count FROM placement WHERE requestfor='".$DC."'";
+                                        
+										
+										$result = $conn->query($sql);
+
+                                        if($result->num_rows > 0){
+                                            while($row = $result->fetch_assoc()){ ?>
+                                                <h1 ><?php echo $row["count"] ?></h1>
+                                            <?php
+                                            }
+                                        }
+                                    ?>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div style="font-size:large" >Placement Requests</div>

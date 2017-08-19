@@ -247,7 +247,46 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i>
+                                      <?php
+
+                                        //database access
+                                        $servername = "localhost";
+                                        $user = "root";
+                                        $pass = "";
+                                        $dbname = "datacenter";
+
+                                        //establishing connection
+                                        $conn = new mysqli($servername, $user, $pass, $dbname);
+
+                                        if($conn -> connect_error){
+                                            die("Connection Failed: ". $conn->connect_error);
+                                        }
+                                        
+										
+										if($_SESSION['role'] == 1){
+											$DC="Commercial Data Center Lahore";
+										}else if ($_SESSION['role'] == 2){	
+												$DC="IT Data Center Islamabad";
+											  }else if($_SESSION['role'] == 3){
+												  $DC="Commercial Data Center Karachi";
+													}else if($_SESSION['role'] == 4){
+														$DC="IT Data Center Karachi";
+															}
+										
+										
+										
+                                        $sql = "SELECT count(*) as count FROM placement WHERE requestfor='".$DC."'";
+                                        
+										
+										$result = $conn->query($sql);
+
+                                        if($result->num_rows > 0){
+                                            while($row = $result->fetch_assoc()){ ?>
+                                                <h1 ><?php echo $row["count"] ?></h1>
+                                            <?php
+                                            }
+                                        }
+                                    ?>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div style="font-size:large" >Placement Requests</div>
@@ -551,7 +590,79 @@
 				
 				
 				
-				
+					
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2>Server Placement Requests</h2>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Request ID:</th>
+                                        <th>Request generated for:</th>
+                                        <th>Request generated on date:</th>
+                                        <th>Request generated on time:</th>
+                                        <th>Status:</th>
+                                        <th>View Report:</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablebody2">
+                                    <?php
+
+                                        //database access
+                                        $servername = "localhost";
+                                        $user = "root";
+                                        $pass = "";
+                                        $dbname = "datacenter";
+
+                                        //establishing connection
+                                        $conn = new mysqli($servername, $user, $pass, $dbname);
+
+                                        if($conn -> connect_error){
+                                            die("Connection Failed: ". $conn->connect_error);
+                                        }
+                                        echo("Connection Successful");
+										
+										if($_SESSION['role'] == 1){
+											$DC="Commercial Data Center Lahore";
+										}else if ($_SESSION['role'] == 2){	
+												$DC="IT Data Center Islamabad";
+											  }else if($_SESSION['role'] == 3){
+												  $DC="Commercial Data Center Karachi";
+													}else if($_SESSION['role'] == 4){
+														$DC="IT Data Center Karachi";
+															}
+										echo $DC;
+										
+										
+                                        $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM placement WHERE requestfor='".$DC."'  AND status !='Accepted'";
+                                        
+										
+										$result = $conn->query($sql);
+
+                                        if($result->num_rows > 0){
+                                            while($row = $result->fetch_assoc()){ ?>
+                                                    <tr>
+                                                        <td><?php echo $row["id"] ?></td>
+                                                        <td><?php echo $row["requestfor"] ?></td>
+                                                        <td><?php echo $row["requestdate"] ?></td>
+                                                        <td><?php echo $row["requesttime"] ?></td>
+                                                        <td><?php echo $row["status"] ?></td>
+                                                        <td><a class="btn btn-default btn-sm" href="dcReportView2.php?id=<?php echo $row['id'];?>">View</a></td>
+                                                    </tr>
+                                            <?php
+                                            }
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+						 <div class="col-md-12 text-center">
+					  <ul class="pagination pagination-lg pager" id="myPager2"></ul>
+					  </div>
+                    </div>
+                </div>
+                <!-- /.row -->
 				
 				
 				
@@ -790,6 +901,121 @@ $(document).ready(function(){
 $(document).ready(function(){
     
   $('#tablebody1').pageMe({pagerSelector:'#myPager1',showPrevNext:true,hidePageNumbers:false,perPage:5});
+    
+});
+		
+		
+		</script>
+		
+		
+		
+				<script>
+		
+		$.fn.pageMe = function(opts){
+    var $this = this,
+        defaults = {
+            perPage: 7,
+            showPrevNext: false,
+            hidePageNumbers: false
+        },
+        settings = $.extend(defaults, opts);
+    
+    var listElement = $this;
+    var perPage = settings.perPage; 
+    var children = listElement.children();
+    var pager = $('.pager');
+    
+    if (typeof settings.childSelector!="undefined") {
+        children = listElement.find(settings.childSelector);
+    }
+    
+    if (typeof settings.pagerSelector!="undefined") {
+        pager = $(settings.pagerSelector);
+    }
+    
+    var numItems = children.size();
+    var numPages = Math.ceil(numItems/perPage);
+
+    pager.data("curr",0);
+    
+    if (settings.showPrevNext){
+        $('<li><a href="#" class="prev_link">«</a></li>').appendTo(pager);
+    }
+    
+    var curr = 0;
+    while(numPages > curr && (settings.hidePageNumbers==false)){
+        $('<li><a href="#" class="page_link">'+(curr+1)+'</a></li>').appendTo(pager);
+        curr++;
+    }
+    
+    if (settings.showPrevNext){
+        $('<li><a href="#" class="next_link">»</a></li>').appendTo(pager);
+    }
+    
+    pager.find('.page_link:first').addClass('active');
+    pager.find('.prev_link').hide();
+    if (numPages<=1) {
+        pager.find('.next_link').hide();
+    }
+      pager.children().eq(1).addClass("active");
+    
+    children.hide();
+    children.slice(0, perPage).show();
+    
+    pager.find('li .page_link').click(function(){
+        var clickedPage = $(this).html().valueOf()-1;
+        goTo(clickedPage,perPage);
+        return false;
+    });
+    pager.find('li .prev_link').click(function(){
+        previous();
+        return false;
+    });
+    pager.find('li .next_link').click(function(){
+        next();
+        return false;
+    });
+    
+    function previous(){
+        var goToPage = parseInt(pager.data("curr")) - 1;
+        goTo(goToPage);
+    }
+     
+    function next(){
+        goToPage = parseInt(pager.data("curr")) + 1;
+        goTo(goToPage);
+    }
+    
+    function goTo(page){
+        var startAt = page * perPage,
+            endOn = startAt + perPage;
+        
+        children.css('display','none').slice(startAt, endOn).show();
+        
+        if (page>=1) {
+            pager.find('.prev_link').show();
+        }
+        else {
+            pager.find('.prev_link').hide();
+        }
+        
+        if (page<(numPages-1)) {
+            pager.find('.next_link').show();
+        }
+        else {
+            pager.find('.next_link').hide();
+        }
+        
+        pager.data("curr",page);
+      	pager.children().removeClass("active");
+        pager.children().eq(page+1).addClass("active");
+    
+    }
+};
+
+$(document).ready(function(){
+    
+  $('#tablebody2').pageMe({pagerSelector:'#myPager2',showPrevNext:true,hidePageNumbers:false,perPage:5});
     
 });
 		

@@ -274,12 +274,12 @@
 			function accept(id) {
 				if(confirm("Are you sure?")==true){
 					
-					$.post('acceptbykam.php',{postid:id}, function(data){
+					$.post('acceptbykam2.php',{postid:id}, function(data){
 						alert("Request Accepted");
 						
 					});
 				}
-				$( "#requests" ).load( "corporateReportView.php #requests" );
+				$( "#requests" ).load( "corporateReportView2.php #requests" );
 			}
 		</script>
 		
@@ -293,12 +293,12 @@
 				 if (reason == null || reason == "") {
 						
 					} else {
-						$.post('rejectbykam.php',{postid:id, postreason:reason}, function(data){
+						$.post('rejectbykam2.php',{postid:id, postreason:reason}, function(data){
 							alert("Request rejected");
 						
 					});
 					}
-				$( "#requests" ).load( "corporateReportView.php #requests" );
+				$( "#requests" ).load( "corporateReportView2.php #requests" );
 			
 			}
 		</script>

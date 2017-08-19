@@ -293,12 +293,12 @@
 			function acceptd(id) {
 				if(confirm("Are you sure?")==true){
 					
-					$.post('acceptbydc.php',{postid:id}, function(data){
+					$.post('acceptbydc2.php',{postid:id}, function(data){
 						alert("Request Accepted");
 						
 					});
 				}
-				$( "#requests" ).load( "corporateReportView.php #requests" );
+				$( "#requests" ).load( "dcReportView2.php #requests" );
 			}
 		</script>
 		
@@ -312,13 +312,13 @@
 				 if (reason == null || reason == "") {
 						
 					} else {
-						$.post('rejectbydc.php',{postid:id, postreason:reason}, function(data){
+						$.post('rejectbydc2.php',{postid:id, postreason:reason}, function(data){
 							alert("Request rejected");
 						
 					});
 					}
 				
-				$( "#requests" ).load( "corporateReportView.php #requests" );
+				$( "#requests" ).load( "dcReportView2.php #requests" );
 			
 			}
 		</script>
