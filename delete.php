@@ -19,6 +19,5 @@ $id=$_POST['postid'];
                                         $sql = "DELETE FROM customerrequest WHERE id=".$id;
                                         $result = $conn->query($sql);
 
-				
 										
 ?>

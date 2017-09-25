@@ -1,6 +1,7 @@
+
 <?php
     session_start();
-    if($_SESSION['user']==""){
+    if($_SESSION['user']=="" || $_SESSION['role'] != 0){
         header("Location: index.php");
         exit();
     }
@@ -81,7 +82,8 @@
         $requestfor = $_POST["requestfor"];
 		$permission = $_POST["permission"];
 		$enviornment = $_POST["enviornment"];
-		
+		$remarks = $_POST["remarks"];
+		$clientid=$_SESSION['id'];
         $status = "Awaiting approval from KAM";
 
         date_default_timezone_set("Asia/Karachi");
@@ -102,12 +104,56 @@
         }
         echo "Connection Successful";
 
-        $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM, clientid) VALUES ('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."', '".$_SESSION['id']."')";
+        $sql = "INSERT INTO customerrequest (requestfor, requesttime, requestdate, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status , KAM, clientid , permission , enviornment , remarks) VALUES('".$requestfor."','".$requestTime."', '".$requestDate."', '".$name."', '".$nic."', '".$company."', '".$timein."', '".$timeout."', '".$workdetails."', '".$equipments."', '".$workedon."', '".$shutdown."', '".$software."', '".$hardware."', '".$maintanence."', '".$status."', '".$kam."',  '".$clientid."', '".$permission."', '".$enviornment."', '".$remarks."')";
         if($conn->query($sql)===TRUE){
             echo "New Row added Successfully";
+			                 
+            //Mail function
+            $sql = "SELECT id,KAM FROM customerrequest where clientid='".$clientid."' ORDER BY id DESC LIMIT 1";
+			$result = $conn->query($sql);
+			 if($result->num_rows > 0){
+                                            while($row = $result->fetch_assoc()){
+                                                        $id= $row["id"];
+														$kam= $row["KAM"];
+                                            }
+                                        }
+										echo $kam;
+			$sql = "SELECT email FROM users where Name='".$kam."'";
+			echo $sql;
+			$result = $conn->query($sql);
+			 if($result->num_rows > 0){ 
+                                            while($row = $result->fetch_assoc()){
+                                                        $kamemail= $row["email"];
+                                            }
+                                        }
+			$kammsg="You've new visit request. ID=".$id.". Please Visit Portal for further details";
+			mail($kamemail, "New Visit request", $kammsg);
+			$sql = "SELECT email FROM users where id='".$clientid."'";
+			$result = $conn->query($sql);
+			 if($result->num_rows > 0){
+                                            while($row = $result->fetch_assoc()){
+                                                        $email= $row["email"];
+                                            }
+                                        }
+										
+			$msg="New request added succesfully, ID=".$id." Please Visit the portal to view the details";
+			echo $msg;
+			$headers = "From: ptcldatacenters@ptcl.net.pk";
+
+			mail($email, "Visit Request Added Successfully", $msg, $headers);
 			
-	    					header("Location: customerDashboard.php"); //to the customer dashboard
-	    					exit();
+			
+            //End Mail
+			
+          //  header("Location: customerDashboard.php"); //to the customer dashboard
+	    //	exit();
+             echo "
+            <script type=\"text/javascript\">
+            alert(\"Request Generated Successfully\");
+            </script>
+            ";
+		
+		
         }
         else {
             print_r( "Error: " . $sql . "<br>" . $conn->error); exit();
@@ -117,8 +163,6 @@
     }
 
 ?>
-
-
 
 
 
@@ -141,12 +185,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">PTCL Data Center</a>
+             <img src="img/ptcl.png" class="img-responsive navbar-brand" >
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Customer Name <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['user']?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -171,14 +215,21 @@
                         <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li >
                     <li class="active">
-                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> New Request</a>
+                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Routine Activity Form</a>
                     </li>
-					
+						 <li >
+                        <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Maintanence Form</a>
+                    </li>
+                    <li >
+                        <a href="placementform.php"><i class="fa fa-fw fa-location-arrow"></i> Placement Form</a>
+					<li >
+                        <a href="server.php"><i class="fa fa-fw fa-location-arrow"></i> Server Placement Form</a>
+                    </li>
 					<li>
                         <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
                     </li>
 					<li>
-                        <a href="#"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                        <a href="documents.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
                     </li>
                 </ul>
             </div>
@@ -229,10 +280,10 @@
 						  <div class="form-group">
                                 <label>Request for</label>
                                 <select class="form-control" name="requestfor">
-                                    <option value="Commecial Data Center Karachi">Commercial Data Center Karachi</option>
+                                    <option value="Commercial Data Center Karachi">Commercial Data Center Karachi</option>
                                     <option value="IT Data Center Karachi">IT Data Center Karachi</option>
-                                    <option value="Commecial Data Center Lahore">Commercial Data Center Lahore</option>
-									 <option value="Commecial Data Center Lahore">IT Data Center Islamabad</option>
+                                    <option value="Commercial Data Center Lahore">Commercial Data Center Lahore</option>
+									 <option value="IT Data Center Lahore">IT Data Center Islamabad</option>
                                 </select>
                             </div>
 							</div>
@@ -279,7 +330,7 @@
 							<label> Start date & time of Visit </label>
 								<div class='input-group date' id='datetimepicker6' >
 								
-									<input type='text' class="form-control" name="timein"/>
+									<input type='text' class="form-control" name="timein" placeholder="mm/dd/yyyy 00:00 AM" required />
 									<span class="input-group-addon">
 										<span class="glyphicon glyphicon-calendar"></span>
 									</span>
@@ -291,7 +342,7 @@
 							<label> End date & time of Visit </label>
 								<div class='input-group date' id='datetimepicker7' >
 								
-									<input type='text' class="form-control" name="timeout" />
+									<input type='text' class="form-control" name="timeout" placeholder="mm/dd/yyyy 00:00 AM" required />
 									<span class="input-group-addon">
 										<span class="glyphicon glyphicon-calendar"></span>
 									</span>
@@ -303,15 +354,15 @@
 	
 								<div class="form-group">
                                 <label>Name of the visitor</label>
-                                <input class="form-control" name="name" id='name'>
-                               
+                                <input class="form-control" name="name" id='name' required>
+                               <p class="help-block">In case of more than one name, kindly use commas.</p>
 								</div>
 							</div>
 							<div class='col-md-12'>
                             <div class="form-group">
                                 <label>CNIC</label>
-                                <input type="text" maxlength="13 "class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                               
+                                <input type="text" maxlength="13" pattern=".{13,13}" class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                               <p class="help-block">In case of more than one CNICs, kindly use commas.</p>
                             </div>
 							
 							</div>	
@@ -323,7 +374,7 @@
      
 							   <div class="form-group">
                                 <label>Company</label>
-                                <input class="form-control" name="company">
+                                <input class="form-control" name="company" required>
                             </div>
 						</div>
 
@@ -392,12 +443,22 @@
                                 <label>Hardware Installation/Replacement</label>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="hardware" value="Yes" checked>Yes
+                                        <input type="radio" name="hardware" value="Hardware Installation" checked>Hardware Installation
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="hardware" value="No">No
+                                        <input type="radio" name="hardware" value="Hardware Replacement">Hardware Replacement
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="hardware" value="Hardware Replacement">Hardware Replacement
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="hardware" value="None">None
                                     </label>
                                 </div>
                             </div>
@@ -406,12 +467,17 @@
                                 <label>Servers/Equipment Maintanence Activity</label>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="maintanence" value="Yes" checked>Yes
+                                        <input type="radio" name="maintanence" value="Server Maintanence" checked>Server Maintenance
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="maintanence" value="No">No
+                                        <input type="radio" name="maintanence" value="Equipment Maintanence" checked>Equipment Maintenance
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="maintanence" value="None">None
                                     </label>
                                 </div>
                             </div>
@@ -424,10 +490,10 @@
 						 <div class="form-group">
                                 <label>Permission from DC Shift Personnel </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="permission" id="permissiony" value="option1" checked>Yes
+                                    <input type="radio" name="permission" id="permissiony" value="Yes" checked>Yes
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="permission" id="permissionn" value="option2">No
+                                    <input type="radio" name="permission" id="permissionn" value="No">No
                                 </label>
                                
                             </div>
@@ -438,10 +504,10 @@
 						 <div class="form-group">
                                 <label>Satisfied from DC enviornment</label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="enviornment" id="satisfies" value="option1" checked>Yes
+                                    <input type="radio" name="enviornment" id="satisfies" value="Yes" checked>Yes
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="enviornment" id="not-satisfied" value="option2">No
+                                    <input type="radio" name="enviornment" id="not-satisfied" value="No">No
                                 </label>
                                
                             </div>
@@ -451,7 +517,7 @@
      
 							<div class="form-group">
                                 <label>Remarks (if any)</label>
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea class="form-control" rows="3" name="remarks"></textarea>
                             </div>
 						</div>
                           
@@ -464,8 +530,8 @@
 									?>
      
 							<div class="form-group">
-                                <button type="submit" class="btn btn-default" >Submit Button</button>
-                            <button type="reset" class="btn btn-default">Reset Button</button>
+                            <button type="submit" class="btn btn-default" >Submit</button>
+                          
                             </div>
 						</div>
 
