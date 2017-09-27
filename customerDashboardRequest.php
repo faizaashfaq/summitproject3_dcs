@@ -109,15 +109,60 @@
             echo "New Row added Successfully";
 			                 
             //Mail function
+<<<<<<< HEAD
             
             //End Mail
             header("Location: customerDashboard.php"); //to the customer dashboard
 	    	exit();
+=======
+            $sql = "SELECT id,KAM FROM customerrequest where clientid='".$clientid."' ORDER BY id DESC LIMIT 1";
+			$result = $conn->query($sql);
+			 if($result->num_rows > 0){
+                                            while($row = $result->fetch_assoc()){
+                                                        $id= $row["id"];
+														$kam= $row["KAM"];
+                                            }
+                                        }
+										echo $kam;
+			$sql = "SELECT email FROM users where Name='".$kam."'";
+			echo $sql;
+			$result = $conn->query($sql);
+			 if($result->num_rows > 0){ 
+                                            while($row = $result->fetch_assoc()){
+                                                        $kamemail= $row["email"];
+                                            }
+                                        }
+			$kammsg="You've new visit request. ID=".$id.". Please Visit Portal for further details";
+			mail($kamemail, "New Visit request", $kammsg);
+			$sql = "SELECT email FROM users where id='".$clientid."'";
+			$result = $conn->query($sql);
+			 if($result->num_rows > 0){
+                                            while($row = $result->fetch_assoc()){
+                                                        $email= $row["email"];
+                                            }
+                                        }
+										
+			$msg="New request added succesfully, ID=".$id." Please Visit the portal to view the details";
+			echo $msg;
+			$headers = "From: ptcldatacenters@ptcl.net.pk";
+
+			mail($email, "Visit Request Added Successfully", $msg, $headers);
+			
+			
+            //End Mail
+			
+          //  header("Location: customerDashboard.php"); //to the customer dashboard
+	    //	exit();
+>>>>>>> f6531dc4a0521bb5bee6fc9e8be83e988bee2288
              echo "
             <script type=\"text/javascript\">
             alert(\"Request Generated Successfully\");
             </script>
+<<<<<<< HEAD
         ";
+=======
+            ";
+>>>>>>> f6531dc4a0521bb5bee6fc9e8be83e988bee2288
 		
 		
         }
