@@ -106,19 +106,10 @@
                         <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li>
                    <li >
-                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Routine Activity Form</a>
-                    </li>
-						 <li >
-                        <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Maintanence Form</a>
+                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-tasks"></i> Routine Activity Form</a>
                     </li>
                     <li >
-                        <a href="placementform.php"><i class="fa fa-fw fa-location-arrow"></i> Placement Form</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
-                    </li>
-                   <li>
-                        <a href="documents.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                        <a href="placementform.php"><i class="fa fa-fw fa-wrench"></i> Placement Form</a>
                     </li>
                 </ul>
             </div>
@@ -133,7 +124,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Dashboard
+                           <i class="fa fa-dashboard"></i>  Dashboard
                         </h1>
                         <ol class="breadcrumb">
                             <li>
@@ -180,7 +171,6 @@
                                         if($conn -> connect_error){
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
-                                        echo("Connection Successful");
                                         $sql = "SELECT id, clientid, requestfor, requestdate, requesttime, name, nic, company, timein, timeout, workdetails, equipments, workedon, shutdown, software, hardware, maintanence, status FROM customerrequest WHERE id = ".$ID."";
                                         $result = $conn->query($sql);
                                         if($result->num_rows > 0){

@@ -109,12 +109,10 @@
             echo "New Row added Successfully";
 			                 
             //Mail function
-<<<<<<< HEAD
             
             //End Mail
             header("Location: customerDashboard.php"); //to the customer dashboard
 	    	exit();
-=======
             $sql = "SELECT id,KAM FROM customerrequest where clientid='".$clientid."' ORDER BY id DESC LIMIT 1";
 			$result = $conn->query($sql);
 			 if($result->num_rows > 0){
@@ -153,16 +151,12 @@
 			
           //  header("Location: customerDashboard.php"); //to the customer dashboard
 	    //	exit();
->>>>>>> f6531dc4a0521bb5bee6fc9e8be83e988bee2288
              echo "
             <script type=\"text/javascript\">
             alert(\"Request Generated Successfully\");
             </script>
-<<<<<<< HEAD
         ";
-=======
-            ";
->>>>>>> f6531dc4a0521bb5bee6fc9e8be83e988bee2288
+            
 		
 		
         }
@@ -226,22 +220,11 @@
                         <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li >
                     <li class="active">
-                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Routine Activity Form</a>
-                    </li>
-						 <li >
-                        <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Maintanence Form</a>
+                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-tasks"></i> Routine Activity Form</a>
                     </li>
                     <li >
-                        <a href="placementform.php"><i class="fa fa-fw fa-location-arrow"></i> Placement Form</a>
-					<li >
-                        <a href="server.php"><i class="fa fa-fw fa-location-arrow"></i> Server Placement Form</a>
-                    </li>
-					<li>
-                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
-                    </li>
-					<li>
-                        <a href="documents.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
-                    </li>
+                        <a href="placementform.php"><i class="fa fa-fw fa-wrench"></i> Placement Form</a>
+					</li >
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -255,14 +238,14 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Request Visit
+                          <i class="fa fa-tasks"></i>  Routine Activity Form
                         </h1>
                         <ol class="breadcrumb">
                             <li>
                                 <i class="fa fa-dashboard"></i>  <a href="customerDashboard.php">Dashboard</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-edit"></i> Routine Activity Form
+                                <i class="fa fa-tasks"></i> Routine Activity Form
                             </li>
                         </ol>
                     </div>
@@ -289,7 +272,7 @@
 						
 						<div class='col-md-12'>
 						  <div class="form-group">
-                                <label>Request for</label>
+                                <label>Request for:</label>
                                 <select class="form-control" name="requestfor">
                                     <option value="Commercial Data Center Karachi">Commercial Data Center Karachi</option>
                                     <option value="IT Data Center Karachi">IT Data Center Karachi</option>
@@ -298,10 +281,8 @@
                                 </select>
                             </div>
 							</div>
-							
-							<div class='col-md-12'>
      
-							   <div class="form-group">
+							   <!-- <div class="form-group">
                                 <label>Name of the KAM</label>
                                  <select class="form-control" name="KAM">
 								   <?php
@@ -334,11 +315,11 @@
                                     
                                 </select>
                             </div>
-						</div>
+						</div> -->
 
                              <div class='col-md-6'>
 							<div class="form-group">
-							<label> Start date & time of Visit </label>
+							<label> Start date & time of visit: </label>
 								<div class='input-group date' id='datetimepicker6' >
 								
 									<input type='text' class="form-control" name="timein" placeholder="mm/dd/yyyy 00:00 AM" required />
@@ -350,7 +331,7 @@
 						</div>
 						<div class='col-md-6'>
 							<div class="form-group">
-							<label> End date & time of Visit </label>
+							<label> End date & time of visit: </label>
 								<div class='input-group date' id='datetimepicker7' >
 								
 									<input type='text' class="form-control" name="timeout" placeholder="mm/dd/yyyy 00:00 AM" required />
@@ -364,14 +345,14 @@
 						<div class='col-md-12'>
 	
 								<div class="form-group">
-                                <label>Name of the visitor</label>
+                                <label>Name of the visitor:</label>
                                 <input class="form-control" name="name" id='name' required>
                                <p class="help-block">In case of more than one name, kindly use commas.</p>
 								</div>
 							</div>
 							<div class='col-md-12'>
                             <div class="form-group">
-                                <label>CNIC</label>
+                                <label>CNIC:</label>
                                 <input type="text" maxlength="13" pattern=".{13,13}" class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                                <p class="help-block">In case of more than one CNICs, kindly use commas.</p>
                             </div>
@@ -384,7 +365,7 @@
 						<div class='col-md-12'>
      
 							   <div class="form-group">
-                                <label>Company</label>
+                                <label>Company:</label>
                                 <input class="form-control" name="company" required>
                             </div>
 						</div>
@@ -396,7 +377,7 @@
 						<div class='col-md-12'>
      
 							<div class="form-group">
-                                <label>Work Details</label>
+                                <label>Work Details:</label>
                                 <textarea class="form-control" rows="3" name="workdetails"></textarea>
                             </div>
 						</div>
@@ -405,7 +386,7 @@
 						<div class='col-md-12'>
      
 							<div class="form-group">
-                                <label>Equipment Accompanying</label>
+                                <label>Equipment Accompanying:</label>
                                  <textarea class="form-control" rows="3" name="equipments"></textarea>
                             </div>
 						</div>
@@ -413,7 +394,7 @@
 						<div class='col-md-12'>
      
 							<div class="form-group">
-                                <label>Servers/Equipments/AC Units to be worked on</label>
+                                <label>Servers/Equipments/Rack to be worked on:</label>
                                
 								  <textarea class="form-control" rows="3" name="workedon"></textarea>
                             </div>
@@ -423,7 +404,7 @@
                           
                     <div class="col-lg-12">
                          <div class="form-group">
-                                <label>Server Shutdown Required</label>
+                                <label>Server Shutdown Required:</label>
                                 <div class="radio">
                                     <label>
                                         <input type="radio" name="shutdown" value="Yes" checked>Yes
@@ -437,7 +418,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Software Installation</label>
+                                <label>Software Installation:</label>
                                 <div class="radio">
                                     <label>
                                         <input type="radio" name="software" value="Yes" checked>Yes
@@ -450,7 +431,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label>Hardware Installation/Replacement</label>
                                 <div class="radio">
                                     <label>
@@ -472,7 +453,7 @@
                                         <input type="radio" name="hardware" value="None">None
                                     </label>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="form-group">
                                 <label>Servers/Equipment Maintanence Activity</label>
@@ -493,36 +474,6 @@
                                 </div>
                             </div>
                     </div>
-               
-                            
-
-                          	<div class='col-md-12'>
-     
-						 <div class="form-group">
-                                <label>Permission from DC Shift Personnel </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="permission" id="permissiony" value="Yes" checked>Yes
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="permission" id="permissionn" value="No">No
-                                </label>
-                               
-                            </div>
-						</div>
-						
-						 	<div class='col-md-12'>
-     
-						 <div class="form-group">
-                                <label>Satisfied from DC enviornment</label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="enviornment" id="satisfies" value="Yes" checked>Yes
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="enviornment" id="not-satisfied" value="No">No
-                                </label>
-                               
-                            </div>
-						</div>
 						
 						<div class='col-md-12'>
      

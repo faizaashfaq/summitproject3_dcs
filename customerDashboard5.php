@@ -89,19 +89,10 @@
                         <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Routine Activity Form</a>
-                    </li>
-					 <li >
-                        <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Maintenance Form</a>
+                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-tasks"></i> Routine Activity Form</a>
                     </li>
                     <li >
-                        <a href="placementform.php"><i class="fa fa-fw fa-location-arrow"></i> Placement Form</a>
-                    </li>
-					<li>
-                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
-                    </li>
-					<li>
-                        <a href="documents.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                        <a href="placementform.php"><i class="fa fa-fw fa-wrench"></i> Placement Form</a>
                     </li>
                 </ul>
             </div>
@@ -117,7 +108,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 id="header" class="page-header">
-                            Dashboard
+                          <i class="fa fa-dashboard"></i>  Dashboard
                         </h1>
                         <ol class="breadcrumb">
                             <li>
@@ -199,52 +190,6 @@
                                         }
                                       
                                         $sql = "SELECT count(*) as count FROM corrective WHERE clientid=".$_SESSION['id'];
-                                        $result = $conn->query($sql);
-
-                                        if($result->num_rows > 0){
-                                            while($row = $result->fetch_assoc()){ ?>
-											 <h1 ><?php echo $row["count"] ?></h1>
-                                             
-                                            <?php
-                                            }
-                                        }
-											?>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div style="font-size:large" >Maintenance Requests</div>
-                                       
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="customerDashboard2.php">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-red">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                       <?php
-                                        //database access
-                                        $servername = "localhost";
-                                        $user = "root";
-                                        $pass = "";
-                                        $dbname = "datacenter";
-
-                                        //establishing connection
-                                        $conn = new mysqli($servername, $user, $pass, $dbname);
-
-                                        if($conn -> connect_error){
-                                            die("Connection Failed: ". $conn->connect_error);
-                                        }
-                                      
-                                        $sql = "SELECT count(*) as count FROM placement WHERE clientid=".$_SESSION['id'];
                                         $result = $conn->query($sql);
 
                                         if($result->num_rows > 0){
@@ -397,8 +342,6 @@
                                         if($conn -> connect_error){
                                             die("Connection Failed: ". $conn->connect_error);
                                         }
-                                        echo("Connection Successful");
-                                        echo($_SESSION['user']);
                                         $sql = "SELECT id, requestfor, requestdate, requesttime, status FROM placement WHERE clientid=".$_SESSION['id'];
                                         $result = $conn->query($sql);
 

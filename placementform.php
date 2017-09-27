@@ -105,10 +105,9 @@
         if($conn->query($sql)===TRUE){
             echo "New Row added Successfully";
 			                 
-<<<<<<< HEAD
             //Mail function
             
-=======
+
            
             //Mail function
             $sql = "SELECT id,KAM FROM placement where clientid='".$clientid."' ORDER BY id DESC LIMIT 1";
@@ -143,7 +142,7 @@
 			
 			
            
->>>>>>> f6531dc4a0521bb5bee6fc9e8be83e988bee2288
+
             //End Mail
             echo "
             <script type=\"text/javascript\">
@@ -216,19 +215,10 @@
                         <a href="customerDashboard.php"><i class="fa fa-fw fa-table"></i> Dashboard</a>
                     </li >
                     <li>
-                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-location-arrow"></i> Routine Activity Form</a>
-                    </li>
-						 <li >
-                        <a href="correctveform.php"><i class="fa fa-fw fa-location-arrow"></i> Maintanence Form</a>
+                        <a href="customerDashboardRequest.php"><i class="fa fa-fw fa-tasks"></i> Routine Activity Form</a>
                     </li>
                     <li  class="active">
-                        <a href="placementform.php"><i class="fa fa-fw fa-location-arrow"></i> Placement Form</a>
-                    </li>
-					<li>
-                        <a href="#"><i class="fa fa-fw fa-building-o"></i> Space Utilized</a>
-                    </li>
-					<li>
-                        <a href="documents.php"><i class="fa fa-fw fa-newspaper-o"></i> Shared Documents</a>
+                        <a href="placementform.php"><i class="fa fa-fw fa-wrench"></i> Placement Form</a>
                     </li>
                 </ul>
             </div>
@@ -243,14 +233,14 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Equipment Placement Form
+                          <i class="fa fa-wrench"></i>  Equipment Placement Form
                         </h1>
                         <ol class="breadcrumb">
                             <li>
                                 <i class="fa fa-dashboard"></i>  <a href="customerDashboard.php">Dashboard</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-edit"></i> Equipment Placement Form
+                                <i class="fa fa-wrench"></i> Equipment Placement Form
                             </li>
                         </ol>
                     </div>
@@ -277,7 +267,7 @@
 						
 						<div class='col-md-12'>
 						  <div class="form-group">
-                                <label>Request for</label>
+                                <label>Request for:</label>
                                 <select class="form-control" name="requestfor">
                                     <option value="Commercial Data Center Karachi">Commercial Data Center Karachi</option>
                                     <option value="IT Data Center Karachi">IT Data Center Karachi</option>
@@ -290,7 +280,7 @@
 							<div class='col-md-12'>
      
 							   <div class="form-group">
-                                <label>Name of the KAM</label>
+                                <label>Name of the KAM:</label>
                                  <select class="form-control" name="KAM">
 								   <?php
                                         //database access
@@ -326,7 +316,7 @@
 
                              <div class='col-md-6'>
 							<div class="form-group">
-							<label> Start date & time of Visit </label>
+							<label> Start date & time of visit: </label>
 								<div class='input-group date' id='datetimepicker6' >
 								
 									<input type='text' class="form-control" name="timein" placeholder="mm/dd/yyyy 00:00 AM" required />
@@ -338,7 +328,7 @@
 						</div>
 						<div class='col-md-6'>
 							<div class="form-group">
-							<label> End date & time of Visit </label>
+							<label> End date & time of visit: </label>
 								<div class='input-group date' id='datetimepicker7' >
 								
 									<input type='text' class="form-control" name="timeout" placeholder="mm/dd/yyyy 00:00 AM" required />
@@ -352,19 +342,15 @@
 						<div class='col-md-12'>
 	
 								<div class="form-group">
-                                <label>Name of the visitor</label>
+                                <label>Name of the visitor:</label>
                                 <input class="form-control" name="name" id='name' required>
                                <p class="help-block">In case of more than one name, kindly use commas.</p>
 								</div>
 							</div>
 							<div class='col-md-12'>
                             <div class="form-group">
-                                <label>CNIC</label>
-<<<<<<< HEAD
-                                <input type="text" pattern=".{13,13}" class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
-=======
+                                <label>CNIC:</label>
                                 <input type="text" maxlength="13" pattern=".{13,13}" class="form-control" name="nic" id='cnic' placeholder="Enter digits without '-'" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
->>>>>>> f6531dc4a0521bb5bee6fc9e8be83e988bee2288
                                <p class="help-block">In case of more than one CNICs, kindly use commas.</p>
                             </div>
 							
@@ -376,7 +362,7 @@
 						<div class='col-md-12'>
      
 							   <div class="form-group">
-                                <label>Company</label>
+                                <label>Company:</label>
                                 <input class="form-control" name="company" required>
                             </div>
 						</div>
@@ -388,7 +374,7 @@
 						<div class='col-md-12'>
      
 							<div class="form-group">
-                                <label>Equipment Manufacture</label>
+                                <label>Equipment Manufacturer:</label>
                                 <input class="form-control" name="manufacturer"></input>
                             </div>
 						</div>
@@ -397,7 +383,7 @@
 						<div class='col-md-12'>
      
 							<div class="form-group">
-                                <label>Equipment Name</label>
+                                <label>Equipment Name:</label>
                                  <input class="form-control" name="equipmentname"></input>
                             </div>
 						</div>
@@ -405,7 +391,7 @@
 						<div class='col-md-12'>
      
 							<div class="form-group">
-                                <label>Serial No.</label>
+                                <label>Serial No.:</label>
                                
 								  <input class="form-control" name="serialno"></input>
                             </div>
@@ -414,7 +400,7 @@
                         <div class='col-md-12'>
      
                             <div class="form-group">
-                                <label>Power Rating</label>
+                                <label>Power Rating:</label>
                                
                                   <input class="form-control" name="power"></input>
                             </div>
@@ -423,7 +409,7 @@
                         <div class='col-md-12'>
      
                             <div class="form-group">
-                                <label>Rack to be placed in</label>
+                                <label>Rack to be placed in:</label>
                                
                                   <input class="form-control" name="rack"></input>
                             </div>
